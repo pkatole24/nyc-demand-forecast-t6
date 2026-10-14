@@ -58,8 +58,6 @@ Read [AGENTS.md](AGENTS.md) for the predictor integration workflow, coverage, da
 - `tests/`: focused original trip aggregation and DST grid checks.
 - `AGENTS.md`: team working instructions for predictor joins, coverage, interpretation limits and evaluation.
 
-Research-dependent forecasting preparation is retained locally and excluded from the shared repository. Cached availability dates describe archive revisions, not verified original release times. Historical station capacity and full-period inventory are not established by this dataset.
-
-Run the shared preparation checks with `python -m unittest discover -s tests` from a clone. In the maintainer's full local checkout, research-dependent tests also exist; run `python -m unittest discover -s tests -p test_time_grid.py` and `python -m unittest discover -s tests -p test_trip_aggregation.py` for the shared checks alone.
+Download/preparation scripts and their tests are retained locally and excluded from the shared repository. This is a dataset handoff; use the included panel directly. Cached availability dates describe archive revisions, not verified original release times. Historical station capacity and full-period inventory are not established by this dataset.
 
 Failure modes: duplicate join keys can multiply targets, and timezone mistakes can shift predictors around DST. Publication delays can leak future information despite matching timestamps. Validate join cardinality, unmatched coverage and availability at forecast issuance before evaluating added predictors.
