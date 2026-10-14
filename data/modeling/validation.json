@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "network_requests": 0,
+  "station_count": 8,
+  "station_hour_rows": 192760,
+  "hours_per_station": 24095,
+  "partitions": {
+    "initial_train": 70272,
+    "test": 52408,
+    "validation": 70080
+  },
+  "missing_targets": {
+    "pickups": 30,
+    "dropoffs": 32
+  },
+  "iem_missing_hours": 57,
+  "iem_trace_hours": 1670,
+  "iem_normalized_dry_hours": 20689,
+  "historical_inventory_sample_rows": 44744,
+  "original_processed_files_verified_unchanged": 16,
+  "raw_archive_bytes_rehashed": false
+}

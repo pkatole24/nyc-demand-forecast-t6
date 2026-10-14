@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "inputs_sha256": {
+    "data\\processed\\citibike_hourly.parquet": "6a6f6f70bfa22dc8d5f8a42b72d74104483a2e0b526a07288f328e9874d5da89",
+    "data\\processed\\nyc_weather_hourly.parquet": "531ae60a15e61dfbb460404fd2007aab1dea749fa6f9dd2d3f04b63fb9e79d04",
+    "data\\processed\\modeling_dataset.parquet": "3c156e57d87c3a1109a533e5ae8dc8056b0f8cc9fdc509ca80cb62fdd93d711b",
+    "data\\processed\\selected_stations.csv": "c4547221311673417178c7ea14c9e1580763d58c1483fdeae108579d26c65e6d",
+    "data\\processed\\citibike_dst_unresolved.parquet": "7a772dacabc0f2026c94fe83bddecde1c41d6cddb1c12fc03ea180bc255b1809",
+    "data\\processed\\validation.json": "eef51839eeb7e1fd13ec1861bb3d5cca1594607ffee99930a735446d080f8cbc",
+    "data\\research\\source_feasibility\\inventory_station_crosswalk.csv": "daed0660bd3f5225666d688c2638c0e3d89111f949f7e36994cdfa88cc9892ff",
+    "data\\research\\source_feasibility\\samples\\inventory_selected_station_samples.parquet": "fe8cafe0802b0cdc7b08b92e4b1c5406ff5d735a1d9247579c962fea40f05a21",
+    "data\\research\\source_feasibility\\samples\\weather_candidates_hourly.parquet": "6b8e76a8ddab07560ff7477f82bcab127001eac70969f792109415f3f8e76bda",
+    "data\\raw\\citibike\\availability.json": "8a673e7c45ce8f2831da458abc81e79562b68af8af86f7773d02ad0f08015637",
+    "scripts\\prepare_forecasting_data.py": "d5759ee3950a52769b844c6bf685b33a351cb06cb94df0d007cceda717d8be08",
+    "scripts\\research_analyze_weather.py": "49387a6ec2b0e4a4511e7e653bc5ab685a03186db47f10a4082e3e74cf29c8da",
+    "data\\research\\source_feasibility\\raw\\weather\\iem_routine_LGA_2024.receipt.json": "c01a4cf321ddc4941b6e991816d99e10d099fb9e98426dcd132a59fcf15008d0",
+    "data\\research\\source_feasibility\\raw\\weather\\iem_routine_LGA_2024.body": "1d1a741fbb34c652d7bf15b69d77e0f001318728b16b2efb4e88acc79aa7c11c",
+    "data\\research\\source_feasibility\\raw\\weather\\iem_routine_LGA_2025.receipt.json": "89c4761682d022299dbb416a2eb1479ae76c836ea1ad9a340034e95fec45ba7e",
+    "data\\research\\source_feasibility\\raw\\weather\\iem_routine_LGA_2025.body": "1516ad78908bc549d7a68af213aeca54c2e139003721459d7b3fefeb11478879",
+    "data\\research\\source_feasibility\\raw\\weather\\iem_routine_LGA_2026.receipt.json": "022182cfb31ae7986c2ac5789849d126635e31df50e928bdf885d1e205e8eb59",
+    "data\\research\\source_feasibility\\raw\\weather\\iem_routine_LGA_2026.body": "f6782332461cd67636d6446f57a7db1c5458fc703cdfe9e94b3a17dceb8b75c3"
+  },
+  "outputs_sha256": {
+    "weather_hourly.parquet": "abf5c8882862a3a6f4dc609fa9f76edb31d0ba3e8c42d5277b60106f1ec375e6",
+    "modeling_dataset.parquet": "8ea206540774c1220963f766e99d47490484a35eb93f7d30d867f696373ea78b",
+    "inventory_samples.parquet": "03aea5e5c0615803016329a3da988972fc3d7877c22a688210245b587278c2cc",
+    "dst_unresolved.parquet": "7a772dacabc0f2026c94fe83bddecde1c41d6cddb1c12fc03ea180bc255b1809",
+    "selected_stations.csv": "dc7699ece91f8ac4e288e50e97a860eca569558306458a2fcb25a5cf5f552795",
+    "station_crosswalk.csv": "daed0660bd3f5225666d688c2638c0e3d89111f949f7e36994cdfa88cc9892ff",
+    "source_availability.json": "8a673e7c45ce8f2831da458abc81e79562b68af8af86f7773d02ad0f08015637",
+    "validation.json": "e31d3a4adb14bd87560dacdfdcc2d6cc06060ffba5d9e2d476ce15e13b6f59ad"
+  },
+  "original_processed_sha256": {
+    "data\\processed\\citibike_dst_unresolved.parquet": "7a772dacabc0f2026c94fe83bddecde1c41d6cddb1c12fc03ea180bc255b1809",
+    "data\\processed\\citibike_hourly.parquet": "6a6f6f70bfa22dc8d5f8a42b72d74104483a2e0b526a07288f328e9874d5da89",
+    "data\\processed\\data_quality_report.md": "0aa9f7f4bea4b08348b62101860116b5dc3ac27036838f7118a8dfedfa0e7bbe",
+    "data\\processed\\modeling_dataset.parquet": "3c156e57d87c3a1109a533e5ae8dc8056b0f8cc9fdc509ca80cb62fdd93d711b",
+    "data\\processed\\monthly_trip_quality.csv": "d756409c14b95cc78dd556c5e8ba34ee9fbb496eb8119ca7a3605982b0ec03de",
+    "data\\processed\\nyc_weather_hourly.parquet": "531ae60a15e61dfbb460404fd2007aab1dea749fa6f9dd2d3f04b63fb9e79d04",
+    "data\\processed\\selected_stations.csv": "c4547221311673417178c7ea14c9e1580763d58c1483fdeae108579d26c65e6d",
+    "data\\processed\\station_aliases.csv": "4211ae653fe24a106286a99ce3bb0c3f29a0d707afd406531472ce28f6d59289",
+    "data\\processed\\station_candidates.csv": "1fe028da0a24a99ad08ca83f36200d7d20edf412643b8449c06e090047a99bce",
+    "data\\processed\\station_identifier_changes.csv": "d11e57e7ca88023e008a9b7be67c4bfb6a127d7594f0244c83aa2fdcb77cd1ef",
+    "data\\processed\\station_month_coverage.csv": "60434e4fd6be9c0595fc1e050a7e123d3142d183e1f5716712674e8fdb7a891f",
+    "data\\processed\\system_daily_coverage.csv": "86e680a914e12f74bc45a47fb14134514b494af9dd6cec9a66a41ebf9c5575b2",
+    "data\\processed\\system_zero_pickup_date_audit.csv": "84f3c05267b0521d402b1289209a70c2008d1385f1ea1d15384a636db2275af7",
+    "data\\processed\\validation.json": "eef51839eeb7e1fd13ec1861bb3d5cca1594607ffee99930a735446d080f8cbc",
+    "data\\processed\\weather_month_coverage.csv": "7eb0f023b61f270b78b91ed8a86b88c5be90309010a076d44dba492ce3de523e",
+    "data\\processed\\weather_period_coverage.csv": "01948a371b731fcc1e7091eb6dc2bf563650533b5547636c8edee8114cbcd19f"
+  },
+  "limitations": [
+    "Archive revision dates are not original release dates.",
+    "Raw archive integrity relies on prior preparation receipts and validation.",
+    "Inventory samples are partial; capacities are not verified historical capacities.",
+    "Historical realized weather is not available future weather."
+  ]
+}
