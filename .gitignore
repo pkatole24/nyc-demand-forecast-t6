@@ -21,3 +21,4 @@ tests/test_forecasting_weather.py
 scripts/*
 !scripts/.gitkeep
 tests/
+requirements-preparation.local.txt
