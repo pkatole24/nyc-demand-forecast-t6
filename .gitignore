@@ -18,5 +18,6 @@ AGENTS.local.md
 scripts/research_*.py
 scripts/prepare_forecasting_data.py
 tests/test_forecasting_weather.py
-scripts/
+scripts/*
+!scripts/.gitkeep
 tests/
