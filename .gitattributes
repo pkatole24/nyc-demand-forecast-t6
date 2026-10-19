@@ -1,0 +1,3 @@
+# Preserve exact bytes for artifact hashes across operating systems.
+artifacts/** -text
+data/live/weather/receipt.json -text
