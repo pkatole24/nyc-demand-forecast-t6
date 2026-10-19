@@ -1,6 +1,6 @@
-# Shared modeling base
+# Historical modeling dataset
 
-Use `modeling_dataset.parquet` for predictor joins. See the root README for setup, sample loading, partitions and coverage. The panel contains eight stations and 192,760 hourly rows with original targets/calendar fields, Meteostat temperature/wind and audited IEM LGA rainfall.
+Use `modeling_dataset.parquet` for predictor joins. See the root README for setup, dashboard features and evaluation partitions. The panel contains eight stations and 192,760 hourly rows with original targets/calendar fields, Meteostat temperature/wind and audited IEM LGA rainfall.
 
 `timestamp` retains America/New_York timezone information. UTC instants identify hours uniquely. `precipitation_report_timestamp_utc` records the actual routine METAR report time, usually within the nominal report hour. Rain amounts describe the interval since the previous hourly reset and do not necessarily cover the exact trip bin; `interval_semantics` retains that distinction. Reports are not shifted or summed over overlapping intervals.
 
@@ -10,4 +10,4 @@ Temperature uses degrees C, wind uses km/h, and precipitation uses mm. No weathe
 
 selected_stations.csv documents historical IDs and usage proxies. station_crosswalk.csv provides captured GBFS mappings; validate against live metadata before operational use, and treat capacity fields as captured metadata rather than historical capacity. source_availability.json contains cached official bucket revision dates rather than verified original publication dates.
 
-manifest.json retains input/output hashes for the complete maintainer bundle. Verify the shared panel against outputs_sha256; other Parquets and cached raw/research inputs are omitted from Git. validation.json records preparation results for that full local bundle, including optional inventory samples that are not distributed here. The shared clone supports predictor exploration but cannot reconstruct the IEM-enhanced panel from these files alone.
+manifest.json retains input/output hashes for the original preparation bundle. Verify the shared panel against outputs_sha256; other Parquets and cached raw/research inputs are omitted from Git. validation.json records preparation results for that full local bundle, including optional inventory samples that are not distributed here. The submitted panel supports forecasting and predictor exploration; the omitted preparation inputs prevent rebuilding the IEM-enhanced base from these files alone.

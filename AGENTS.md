@@ -1,10 +1,10 @@
-# BikeBalance NYC: team agent instructions
+# BikeBalance NYC: methodology and contribution rules
 
 ## Scope and entry points
 
-Develop hourly pickup/dropoff forecasts for eight Manhattan Citi Bike stations, evaluate additional predictors and explore station balancing scenarios. The shared product currently consists of a prepared historical panel; model accuracy, live inventory integration and operational benefit remain unverified.
+Develop hourly pickup/dropoff forecasts for eight Manhattan Citi Bike stations, evaluate additional predictors and explore station balancing scenarios. The project includes a prepared historical panel, a Streamlit dashboard, live GBFS integration and three forecasting implementations: seasonal naive, daily SARIMA and ARIMAX with lagged weather. Fitted-model and evaluation artifacts are complete and included in the submission; model comparisons require their saved evaluation receipts, and operational benefit remains unverified.
 
-Use README.md for environment setup and loading. Before changing predictors, target handling or evaluation, read data/modeling/data_quality_report.md for measured evidence and selection limits. For rainfall transformations, read data/modeling/README.md for report-clock and observation semantics. Work from files in the shared repository; personal phase plans and research caches are not team dependencies.
+Use README.md for environment setup and loading. Before changing predictors, target handling or evaluation, read data/modeling/data_quality_report.md for measured evidence and selection limits. For rainfall transformations, read data/modeling/README.md for report-clock and observation semantics. Use the submitted repository and its documented artifacts as the reproducible project boundary.
 
 ## Base dataset and coverage
 
@@ -46,4 +46,4 @@ Challenge unsupported assumptions and surface meaningful design choices. Grow a 
 
 Add tests for concrete regressions, non-trivial invariants or observable boundaries. Prefer extending existing behavior-level coverage; avoid tests that mirror literals or merely assert removed code stays absent. Comments explain non-obvious reasoning, invariants and external quirks rather than restating code.
 
-Report commands, measured results, scored/excluded rows, information regime and limitations. Distinguish saved preparation receipts, fresh runtime checks, model metrics and inferred operational implications. For each proposed feature or completed change, state likely failure modes in two or three lines and the checks that address them. Keep shared work free of dependencies on ignored personal plans or local research artifacts.
+Report commands, measured results, scored/excluded rows, information regime and limitations. Distinguish saved preparation receipts, fresh runtime checks, model metrics and inferred operational implications. For each proposed feature or completed change, state likely failure modes in two or three lines and the checks that address them. Keep submission outputs reproducible from documented inputs and record any omitted source dependencies.

@@ -1,0 +1,50 @@
+{
+  "status": "complete",
+  "rows": 489952,
+  "forecasts_sha256": "6a77e280aa45cae8c3d4347aa908c72a9e1b870b3dead79cfbb63e17599c4e3d",
+  "config": {
+    "family": "weather_arimax",
+    "weather_lag_hours": 48,
+    "availability_buffer_hours": 6,
+    "schedule": "monthly",
+    "candidates": [
+      {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      }
+    ],
+    "driver_sha256": "80cafd0dc9446efe9005d609f727ce0f9d0c1f06702296c17fbe52fef644acc8",
+    "weather_policy": "Fixed zero encoding with distinct numeric-missing/trace/provider-zero flags; no future weather"
+  },
+  "source": {
+    "bikebalance\\__init__.py": "7410f840414f62d3e0688d08aae1c096f18fed46d540395b214437c9cc075b9d",
+    "bikebalance\\backtest.py": "5c2143f759a747510302e5d57c1b4f2b7b2379e2c5dae7ce090fbab25244cfff",
+    "bikebalance\\data.py": "770607f5a8f59afffbd13e5bbbae1ab55cb79f0c33e98e1aa1dab90fc29a244e",
+    "bikebalance\\evaluation.py": "e981980d33a532dc4f0189df0e6839b0a55737c8695c68339b557e64ecb45885",
+    "bikebalance\\gbfs.py": "725ee79e3296f0ae8578a226a7233e6c183db17137421df75c49aa2c66ba4b37",
+    "bikebalance\\live.py": "bc2138d4218c5798deff3d11067bcd331f6b28e285448eb5eb164d252093d5f5",
+    "bikebalance\\models.py": "2fcff17da9290bd5978b6fa8f4f3f62270b56d9e18113c66b751910029af7934",
+    "bikebalance\\releases.py": "0845e5df022ee79244a38b1a05a0cd748a42c6a7d024dee75a91a9a3da66a22a",
+    "bikebalance\\selection.py": "8749a5b478ffbf74b497385103a4706bd4d85431a0a849d67529e5d8dcdf0737",
+    "bikebalance\\simulation.py": "68f2dae46ddd3ea0e9aa99d8876c82fdf89cb9282236b091957192bc42ec7368",
+    "bikebalance\\weather.py": "835b5190db552f6eea546e06942cc5f45fadc11c424fc46c0f1624f23da679c9",
+    "bikebalance\\weather_preparation.py": "b2023a15266864ee87fef6455fa482bd1db90cef62dfa7c2d5561c95e553811e"
+  },
+  "versions": {
+    "pandas": "3.0.6",
+    "numpy": "2.5.4",
+    "statsmodels": "0.15.0",
+    "scipy": "1.18.1"
+  },
+  "base": "8ea206540774c1220963f766e99d47490484a35eb93f7d30d867f696373ea78b"
+}

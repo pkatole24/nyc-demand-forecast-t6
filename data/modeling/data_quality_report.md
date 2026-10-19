@@ -1,6 +1,6 @@
-# Shared dataset quality report
+# Dataset quality report
 
-This report describes `data/modeling/modeling_dataset.parquet`, the team's processed base for predictor joins and chronological forecasting experiments. The dataset is prepared; no fitted-model performance or operational benefit has been established. Original preparation and research evidence remain in the maintainer's local checkout. Saved validation results describe preparation checks, not a model evaluation.
+This report describes `data/modeling/modeling_dataset.parquet`, the processed historical base used by the dashboard and chronological forecasting experiments. This report documents dataset quality and selection limits. Model performance is reported separately through completed evaluation artifacts; saved preparation validation does not establish forecasting accuracy or operational benefit.
 
 ## Coverage and partitions
 
@@ -44,7 +44,7 @@ Pickups and dropoffs count published trip endpoints. Net flow equals dropoffs mi
 | Published zero pickups | 35,614 |
 | Published zero dropoffs | 32,441 |
 
-Original trip timestamps lack offsets. Repeated fall-back hours cannot be assigned uniquely; affected direction-specific bins remain missing. Original preparation retained unresolved combined totals separately: 85 selected-station pickups and 116 dropoffs. That separate Parquet is not distributed in this team handoff. Do not allocate those totals or turn unresolved targets into zero.
+Original trip timestamps lack offsets. Repeated fall-back hours cannot be assigned uniquely; affected direction-specific bins remain missing. Original preparation retained unresolved combined totals separately: 85 selected-station pickups and 116 dropoffs. That separate Parquet is not distributed in the submitted base dataset. Do not allocate those totals or turn unresolved targets into zero.
 
 Use UTC instants as hourly join keys. Local spring-forward dates contain 23 hours and fall-back dates contain 25. The two fall-back 01:00 hours have distinct offsets. The holiday field uses US federal holidays, including observed dates; it does not cover every school closure or local event.
 
@@ -73,7 +73,7 @@ Realized historical weather may be revised and is not available ahead of the for
 
 ## Preparation checks and evidence limits
 
-Saved preparation validation passed checks for complete grids, unique station/UTC keys, weather join cardinality, target equality/conservation, precipitation flags, station/crosswalk consistency and cached source integrity. During the team handoff, all eight local modeling outputs matched manifest hashes and the shared panel had zero duplicate station/timestamp keys. The complete maintainer bundle contains optional inventory and unresolved-total Parquets; only the main panel is published here.
+Saved preparation validation passed checks for complete grids, unique station/UTC keys, weather join cardinality, target equality/conservation, precipitation flags, station/crosswalk consistency and cached source integrity. During the team handoff, all eight local modeling outputs matched manifest hashes and the shared panel had zero duplicate station/timestamp keys. The original preparation bundle contains optional inventory and unresolved-total Parquets; only the main historical panel is distributed from that preparation bundle.
 
 Original preprocessing handled 512 cross-month repeated-ID excess records, including 29 conflicting variants, with deterministic global deduplication. Missing source endpoint IDs excluded only the affected endpoint: 70,549 starts and 359,809 ends. These source-level counts are recorded preparation evidence, not a fresh scan of raw archives. Trips crossing the final requested boundary may be right-censored if they appear in a later archive; that loss is unquantified.
 

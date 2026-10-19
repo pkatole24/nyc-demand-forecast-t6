@@ -1,0 +1,326 @@
+{
+  "base_sha256": "8ea206540774c1220963f766e99d47490484a35eb93f7d30d867f696373ea78b",
+  "models": {
+    "5184.08/pickups": {
+      "artifact": "5184.08_pickups.pickle",
+      "sha256": "c77c9fd79f5dcd24feec70375b89052a113947ab1289adaf8a29545152989cfb",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "5184.08/dropoffs": {
+      "artifact": "5184.08_dropoffs.pickle",
+      "sha256": "efc1d2967ee82f1c1d7f5e1c4197b53f798b9d14a7836639233da608d1de6c0a",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "5297.02/pickups": {
+      "artifact": "5297.02_pickups.pickle",
+      "sha256": "52567dccd5c8b81c00f8ac311cd76806f9f62ef8a902771fcbc1905726ed7184",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "5297.02/dropoffs": {
+      "artifact": "5297.02_dropoffs.pickle",
+      "sha256": "ce058dd3e726ca202e87bfed7b5903682824d597a8d5b9376c77076ab5e1472c",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "5696.03/pickups": {
+      "artifact": "5696.03_pickups.pickle",
+      "sha256": "40c1e57488f98d21b0d0d98c5ba1842ec297339b2d6b7a53cd61d82fc6f3807a",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "5696.03/dropoffs": {
+      "artifact": "5696.03_dropoffs.pickle",
+      "sha256": "0462ccc2d32e1067cc3a0f2a9a6d46dc2afdd8ef39e0cd3c15a69fc1868b8acd",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "5805.07/pickups": {
+      "artifact": "5805.07_pickups.pickle",
+      "sha256": "989a5108bf0cb744a4433671a9130c4077e6a21792cb45a8cbd82c50750378d3",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "5805.07/dropoffs": {
+      "artifact": "5805.07_dropoffs.pickle",
+      "sha256": "dd927fd37ee513909cd7b32a2f7d9a1a41984cd014668eb85f752a5aeac0eb30",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "6197.08/pickups": {
+      "artifact": "6197.08_pickups.pickle",
+      "sha256": "e6a31cd5b9baf155bb4a69d05edf9589fe73f804188e67076a5c1f4cd2927806",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "6197.08/dropoffs": {
+      "artifact": "6197.08_dropoffs.pickle",
+      "sha256": "118c9c2a599e87c29f3752d9cd42e55b6ad19601358f63394848b8d2c07bac18",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "6765.01/pickups": {
+      "artifact": "6765.01_pickups.pickle",
+      "sha256": "440633fb1eee5e6b7983c53cf32565332f37c8acfd838186098a6d9e1f965871",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "6765.01/dropoffs": {
+      "artifact": "6765.01_dropoffs.pickle",
+      "sha256": "780f52cfbbfe44eca32bb4535c111acfd83e0f510d354b8bead8c4e688eaa7fa",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "6955.05/pickups": {
+      "artifact": "6955.05_pickups.pickle",
+      "sha256": "1fd441905b3baa7a709d56b73e626336b4e12fe779414aa3ec2143899c7f1e58",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "6955.05/dropoffs": {
+      "artifact": "6955.05_dropoffs.pickle",
+      "sha256": "d00ed852b76d31204115e7352cdff911e403b6fc2ae7b2a4c3b0b025aed2b32a",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "7059.08/pickups": {
+      "artifact": "7059.08_pickups.pickle",
+      "sha256": "08a2732482476b9a82d482da8a4e4dfccde404df9c47642d99c5923b0d328772",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "7059.08/dropoffs": {
+      "artifact": "7059.08_dropoffs.pickle",
+      "sha256": "6c2ac010e3477b38a050f0d8e67acf29bd10feea47d6ea93bab91e8e1c8d2323",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    }
+  },
+  "weather_lag_hours": 48
+}

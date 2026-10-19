@@ -1,0 +1,326 @@
+{
+  "base_sha256": "8ea206540774c1220963f766e99d47490484a35eb93f7d30d867f696373ea78b",
+  "selection_sha256": "9f9e35b27a96bbacbff708d71932167fdd99eb7967708e54cfc1bb40b4b722a3",
+  "models": {
+    "5184.08/pickups/daily_sarima": {
+      "artifact": "5184.08_pickups_daily_sarima.pickle",
+      "sha256": "82ee9abfd2605e3187bbc0ba35d5e6d13731f2c9823d39640169a94c9252d94a",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          1,
+          1,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "5184.08/dropoffs/daily_sarima": {
+      "artifact": "5184.08_dropoffs_daily_sarima.pickle",
+      "sha256": "c8ad8e78ac2e9e09b138b4d4f3b65cbfd2462e2a94525cbc58b945e82b6f3d9d",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          1,
+          1,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "5297.02/pickups/daily_sarima": {
+      "artifact": "5297.02_pickups_daily_sarima.pickle",
+      "sha256": "3339509bbcc549f1b33f6caf0a0ab74a367e7d1465c408d8ccc5b9df6547c279",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          1,
+          1,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "5297.02/dropoffs/daily_sarima": {
+      "artifact": "5297.02_dropoffs_daily_sarima.pickle",
+      "sha256": "dfd08f48afc3945b2e7fa34331f1adde69311ae201eda69de528432148d631f8",
+      "specification": {
+        "order": [
+          0,
+          0,
+          1
+        ],
+        "seasonal_order": [
+          1,
+          0,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "5696.03/pickups/daily_sarima": {
+      "artifact": "5696.03_pickups_daily_sarima.pickle",
+      "sha256": "017d7d16b13a27bcb927655462636cb4277ba94bfedc93605538b4c0127f8f87",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          1,
+          1,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "5696.03/dropoffs/daily_sarima": {
+      "artifact": "5696.03_dropoffs_daily_sarima.pickle",
+      "sha256": "6837003b6278ebdbc62b6d879f941a330a5b18f881706526fa8d9f2ba3afae3d",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          1,
+          1,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "5805.07/pickups/daily_sarima": {
+      "artifact": "5805.07_pickups_daily_sarima.pickle",
+      "sha256": "1ae399fef22932f83a9511bc26deb8d01ad74fa60a20d9a13d4393b42ca7128b",
+      "specification": {
+        "order": [
+          0,
+          0,
+          1
+        ],
+        "seasonal_order": [
+          1,
+          0,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "5805.07/dropoffs/daily_sarima": {
+      "artifact": "5805.07_dropoffs_daily_sarima.pickle",
+      "sha256": "dddb6ddc716cf8f431f291bac9a94c32b03a87f401d8d16aaf87ea987a46b0b9",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          1,
+          1,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "6197.08/pickups/daily_sarima": {
+      "artifact": "6197.08_pickups_daily_sarima.pickle",
+      "sha256": "6f483189e205b53edecea7ddcc0c47fc26a593a77346664f39df1d5d009064b7",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          1,
+          1,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "6197.08/dropoffs/daily_sarima": {
+      "artifact": "6197.08_dropoffs_daily_sarima.pickle",
+      "sha256": "5f943f33f3b12c2dc2ec7018062df241f98a61422cffc7c9a715809fd69954c8",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          1,
+          1,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "6765.01/pickups/daily_sarima": {
+      "artifact": "6765.01_pickups_daily_sarima.pickle",
+      "sha256": "ccce60590da4f28a4e06957d00477412207bac87d6a744eb25afaa2a6ba75935",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          1,
+          1,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "6765.01/dropoffs/daily_sarima": {
+      "artifact": "6765.01_dropoffs_daily_sarima.pickle",
+      "sha256": "2586b0698d1ac0200d6905887ff3cb5311e3ab675a2156af00111e477aeb043c",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          1,
+          1,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "6955.05/pickups/daily_sarima": {
+      "artifact": "6955.05_pickups_daily_sarima.pickle",
+      "sha256": "ed0a8971fb335269410e047ca58186eb3e6319d04a3d49efdce657d74198593e",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          1,
+          1,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "6955.05/dropoffs/daily_sarima": {
+      "artifact": "6955.05_dropoffs_daily_sarima.pickle",
+      "sha256": "1236f7d23128f8aec63f01c0e3cbe771c7db1d3737c0b33f516960ebcd8990be",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          1,
+          1,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "7059.08/pickups/daily_sarima": {
+      "artifact": "7059.08_pickups_daily_sarima.pickle",
+      "sha256": "0b906708916645fdd3b2cb19ef76a486869933e9e42caba8ea93561e23893846",
+      "specification": {
+        "order": [
+          0,
+          0,
+          1
+        ],
+        "seasonal_order": [
+          1,
+          0,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    },
+    "7059.08/dropoffs/daily_sarima": {
+      "artifact": "7059.08_dropoffs_daily_sarima.pickle",
+      "sha256": "c97793245c8e55ea16f99a6193e24666d03bfd4faa52433db822648fd83acd01",
+      "specification": {
+        "order": [
+          1,
+          0,
+          0
+        ],
+        "seasonal_order": [
+          1,
+          1,
+          0,
+          24
+        ],
+        "harmonics": 0
+      },
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "warnings": []
+    }
+  }
+}

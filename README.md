@@ -1,89 +1,61 @@
 # BikeBalance NYC
 
-BikeBalance NYC explores hourly Citi Bike pickup and dropoff forecasting at eight Manhattan stations. The shared base is ready for additional predictor joins and chronological model comparisons. Forecasts could later support station balancing scenarios; trip net flow alone does not measure bike inventory or unmet demand. No model accuracy or operational benefit has been established.
+BikeBalance NYC forecasts hourly Citi Bike pickups and drop-offs at eight Manhattan stations. The Streamlit dashboard combines live station availability, forecasts for the next 24 hours, and historical model evaluation to explore station balancing needs.
 
-## Shared dataset
+The submission covers three models: seasonal naive, daily SARIMA, and ARIMAX with lagged weather. SARIMA and ARIMAX selection, evaluation and deployment artifacts are complete and included in the submission. The dashboard compares saved evaluation results; no operational benefit has been established through a field trial.
 
-Use `data/modeling/modeling_dataset.parquet`: 192,760 station-hour rows, 35 columns, January 1, 2024 through September 30, 2026. This is the only Parquet included in Git (approximately 9.0 MiB). Raw trips, intermediate datasets, research materials and personal implementation plans stay local.
+## Dashboard
 
-The base includes pickups, dropoffs, net flow, calendar fields, Meteostat temperature/wind, audited IEM LGA precipitation, and missingness/provenance flags. Station IDs are strings. Timestamps retain America/New_York timezone information and uniquely identify UTC instants.
+| View | What it shows |
+| --- | --- |
+| Live station overview | Available bikes, empty docks and station capacity for eight stations, with live status refreshed every 60 seconds. A model selector controls estimated extra bikes or empty docks needed over the next 24 hours. |
+| Next 24 hours | Station-level pickup, drop-off and net-flow forecasts, with selectable model comparisons and timestamps in New York time. |
+| Test evaluation | January–September 2026 actuals and forecasts, pooled all-station MAE/RMSE and scored station-hours, plus station-level charts and metrics. Controls select the information regime and visible period. |
 
-| Partition | Period | Rows |
-| --- | --- | ---: |
-| initial_train | 2024 | 70,272 |
-| validation | 2025 | 70,080 |
-| test | January-September 2026 | 52,408 |
+Live status uses official Citi Bike GBFS feeds. Reports must pass freshness, operational-status and identity checks. Low-availability labels use 10% of usable capacity, with a minimum threshold of two. Unavailable or invalid reports are shown explicitly.
 
-See AGENTS.md for chronological model-selection and information-cutoff rules.
+Estimated balancing needs use cumulative forecast net flow against the current usable bike/dock count. They assume no operator redistribution and uniform activity within partial hours. They are scenario estimates, not observed stockouts, unmet demand or recommendations validated through an operational trial.
 
-## Clone and install
+## Models and evaluation
 
-Install Git and Python 3.12 first. Python 3.12 was used for preparation and local loading verification. Run these commands in a terminal:
+| Model | Predictors and behavior | Submission status |
+| --- | --- | --- |
+| Seasonal naive | Same local hour of the previous week; repeats the latest observed week across publication gaps. | Implemented; available without fitted-model artifacts. |
+| Daily SARIMA | Separate station pickup/drop-off histories, autoregressive and moving-average terms, and 24-hour seasonality. | Selection, evaluation and exported models complete; included in the submission. |
+| ARIMAX + past weather | Trip history, daily/weekly calendar cycles, and temperature, wind and rainfall lagged 48 hours, with explicit missing/trace flags. Monthly refitting. | Selection, evaluation and exported models complete; included in the submission. Current forecasts also require recent observed weather. |
 
-```sh
-git clone https://github.com/pkatole24/nyc-demand-forecast-t6.git
-cd nyc-demand-forecast-t6
-```
+Models use 2024 for initial fitting and 2025 for selection. Model choices are frozen before evaluation on January–September 2026. Evaluation distinguishes prior-day trip availability from monthly published-trip availability. All-station metrics pool station-hour errors on shared valid forecast support; net-flow errors are evaluated separately from pickup/drop-off errors. Missing target bins are excluded rather than filled with zeros.
 
-Windows PowerShell:
+The dashboard uses saved model forecasts and evaluation results. Results remain pending when the corresponding artifacts are unavailable. Historical observations end September 30, 2026, so current forecasts bridge an unobserved publication gap. Current ARIMAX forecasts also depend on sufficiently recent weather observations.
 
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe
-```
+## Dataset
 
-macOS/Linux, with Python 3.12 installed:
+The immutable base is `data/modeling/modeling_dataset.parquet`: 192,760 station-hour rows, 35 columns, eight stations and 24,095 hourly instants per station, January 2024 through September 2026. The dataset is protected by a SHA-256 integrity check.
 
-```sh
-python3.12 -m venv .venv
-./.venv/bin/python -m pip install -r requirements.txt
-./.venv/bin/python
-```
+| Partition | Period | Rows | Purpose |
+| --- | --- | ---: | --- |
+| initial_train | 2024 | 70,272 | Initial fitting and feature development |
+| validation | 2025 | 70,080 | Predictor and model selection |
+| test | January–September 2026 | 52,408 | Frozen evaluation |
 
-These commands use the environment's interpreter directly, so activation and PowerShell execution-policy changes are unnecessary. The last command opens a Python console showing `>>>`. Requirements contain only pandas and PyArrow for loading the base; pip installs their dependencies. Installation requires internet access, but loading the checked-in panel does not.
+The base contains published pickups, drop-offs, net flow, calendar fields, Meteostat LaGuardia temperature/wind and audited IEM LGA rainfall. Station IDs are strings. Timestamps retain America/New_York timezone information; UTC instants identify hourly keys uniquely.
 
-## Load and verify
+Net flow equals drop-offs minus pickups. Historical endpoint counts do not establish station inventory or unconstrained demand. The base preserves 30 missing pickup bins and 32 missing drop-off bins from ambiguous fall-back timestamps. Rainfall traces remain distinct from missing observations and measured numeric amounts. Airport weather is a regional covariate shared across stations.
 
-Paste the following block into the Python console opened above. Keep the terminal in the repository root. The block also works in a notebook whose working directory is the repository root and whose kernel uses an environment with these dependencies.
-
-```python
-import hashlib
-import json
-from pathlib import Path
-import pandas as pd
-
-folder = Path("data/modeling")
-path = folder / "modeling_dataset.parquet"
-manifest = json.loads((folder / "manifest.json").read_text())
-expected_hash = manifest["outputs_sha256"][path.name]
-actual_hash = hashlib.sha256(path.read_bytes()).hexdigest()
-if actual_hash != expected_hash:
-    raise ValueError("Dataset hash mismatch: restore the committed base before using it.")
-
-base = pd.read_parquet(path)
-print(base.shape)
-print(base[["station_id", "timestamp", "pickups", "dropoffs"]].head())
-```
-
-Expected shape: `(192760, 35)`. The first five rows are station `5184.08`, January 1, 2024, midnight through 04:00 New York time. Enter `exit()` to return to your terminal.
-
-A missing-file error usually means the console/notebook is running outside the repository root; inspect `Path.cwd()`. An import error means the selected interpreter/kernel lacks the installed dependencies. A hash mismatch requires restoring the base, not skipping verification.
-
-The manifest records the original complete local bundle. Only the main panel is distributed here; verify its hash independently. Other manifest-listed Parquets are intentionally omitted. A clone does not contain the preparation code or cached inputs needed to rebuild this base. Fresh dependency installation on other operating systems has not been verified.
-
-## Working with predictors and models
-
-Read [AGENTS.md](AGENTS.md) for the predictor integration workflow, coverage, data limits and evaluation rules. Read [data/modeling/data_quality_report.md](data/modeling/data_quality_report.md) for measured evidence and station details, and [data/modeling/README.md](data/modeling/README.md) for rainfall semantics.
+See [data quality and selection limits](data/modeling/data_quality_report.md), [weather field semantics](data/modeling/README.md), and [repository methodology and contribution rules](AGENTS.md).
 
 ## Repository contents
 
-- `data/modeling/`: shared panel, schema notes, selected stations/crosswalk, source availability, manifest and saved validation.
-- `data/modeling/data_quality_report.md`: shared-base coverage, station details, target/weather semantics and modeling limitations.
-- `scripts/`: placeholder directory for future team scripts; currently contains only `.gitkeep`.
-- `requirements.txt`: dependencies for reading the shared dataset.
-- `AGENTS.md`: team working instructions for predictor joins, coverage, interpretation limits and evaluation.
+- `app.py` and `dashboard_support.py`: dashboard views, forecasts, model loading and evaluation summaries.
+- `bikebalance/`: data validation, forecasting, chronological evaluation, GBFS integration, weather and balancing calculations.
+- `data/modeling/`: historical panel, station metadata, source availability, manifest and preparation validation.
+- `artifacts/`: generated model selection, fitted models and evaluation outputs; completed dashboard model bundles and saved evaluation results are included in the submission.
+- `scripts/`: forecasting stages, model export, runtime benchmarking and weather refresh.
+- `tests/test_forecasting.py`: forecasting and dashboard behavior checks.
+- `requirements.txt`: pinned application and forecasting dependencies.
 
-This is a dataset handoff; download/preparation code and associated tests remain outside the shared repository. Cached availability dates describe archive revisions, not verified original release times. Historical station capacity and full-period inventory are not established by this dataset.
+## Interpretation limits
 
-Failure modes: running from another directory or selecting a different notebook kernel can prevent loading; verify the working directory and interpreter. Predictor joins can duplicate rows or leak future information; follow the cardinality and availability checks in AGENTS.md.
+Station eligibility uses continuity through 2026, creating a retrospective selection filter. Saved usage statistics include 2025 and must be recomputed from prior history before use as predictors. Archive revision dates do not establish original publication times, and the final archive boundary may censor trips. These limits apply when interpreting historical model comparisons.
+
+Failure modes: missing or mismatched model bundles can leave comparisons unavailable; receipt/hash checks identify incomplete exports. Stale live counts or weather can invalidate current estimates; freshness checks and explicit unavailable states prevent silent reuse. Forecast error, unobserved redistribution and within-hour trip ordering can alter balancing needs, which remain exploratory estimates.
