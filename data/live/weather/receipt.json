@@ -1,59 +1,69 @@
 {
-  "retrieved_at_utc": "2026-10-19 01:10:27.281863+00:00",
+  "retrieved_at_utc": "2026-10-19 06:59:52.375091+00:00",
   "base_sha256": "8ea206540774c1220963f766e99d47490484a35eb93f7d30d867f696373ea78b",
   "start_utc": "2026-10-01 04:00:00+00:00",
-  "stop_utc_exclusive": "2026-10-19 01:00:00+00:00",
-  "hours": 429,
+  "stop_utc_exclusive": "2026-10-19 06:00:00+00:00",
+  "hours": 434,
   "meteostat": {
     "station": "72503",
     "model": false,
     "flags": true,
     "version": "1.7.6",
-    "path": "data\\live\\weather\\meteostat_72503_20261019T011027Z.parquet",
+    "path": "data/live/weather/meteostat_72503_20261019T065952Z.parquet",
     "sha256": "940d7b17b20e136c8e40533aaa10f83631b185d46a027721785b8be5ac000a85"
   },
   "iem": {
     "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=LGA&data=all&year1=2026&month1=10&day1=1&year2=2026&month2=10&day2=20&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3",
     "status": 200,
-    "path": "data\\live\\weather\\iem_routine_LGA_20261019T011027Z.body",
-    "sha256": "315d9cd7811c5afc7d5ef98c7dae174c70249b4cb6d3744b76351f9b7598a024"
+    "path": "data/live/weather/iem_routine_LGA_20261019T065952Z.body",
+    "sha256": "ee9a841026bbeea85308eb84ba1399ecff0f0f7ecc6b84a17b51b40135ae4f45"
   },
   "availability_assumption": "source hour + 6h < issuance; rain report < source hour + 6h; actual first publication times unknown",
   "coverage": {
     "temperature": {
       "available": 426,
-      "missing": 3,
+      "missing": 8,
       "last_utc": "2026-10-18 21:00:00+00:00",
-      "age_hours": 4.174244961944445,
+      "age_hours": 9.997881969722222,
       "missing_utc": [
         "2026-10-18 22:00:00+00:00",
         "2026-10-18 23:00:00+00:00",
-        "2026-10-19 00:00:00+00:00"
+        "2026-10-19 00:00:00+00:00",
+        "2026-10-19 01:00:00+00:00",
+        "2026-10-19 02:00:00+00:00",
+        "2026-10-19 03:00:00+00:00",
+        "2026-10-19 04:00:00+00:00",
+        "2026-10-19 05:00:00+00:00"
       ]
     },
     "wind_speed": {
       "available": 426,
-      "missing": 3,
+      "missing": 8,
       "last_utc": "2026-10-18 21:00:00+00:00",
-      "age_hours": 4.174244961944445,
+      "age_hours": 9.997881969722222,
       "missing_utc": [
         "2026-10-18 22:00:00+00:00",
         "2026-10-18 23:00:00+00:00",
-        "2026-10-19 00:00:00+00:00"
+        "2026-10-19 00:00:00+00:00",
+        "2026-10-19 01:00:00+00:00",
+        "2026-10-19 02:00:00+00:00",
+        "2026-10-19 03:00:00+00:00",
+        "2026-10-19 04:00:00+00:00",
+        "2026-10-19 05:00:00+00:00"
       ]
     },
     "rain_observed": {
-      "available": 429,
+      "available": 434,
       "missing": 0,
-      "last_utc": "2026-10-19 00:00:00+00:00",
-      "age_hours": 1.1742449619444444,
+      "last_utc": "2026-10-19 05:00:00+00:00",
+      "age_hours": 1.997881969722222,
       "missing_utc": []
     },
     "rain_numeric": {
-      "available": 406,
+      "available": 411,
       "missing": 23,
-      "last_utc": "2026-10-19 00:00:00+00:00",
-      "age_hours": 1.1742449619444444,
+      "last_utc": "2026-10-19 05:00:00+00:00",
+      "age_hours": 1.997881969722222,
       "missing_utc": [
         "2026-10-01 22:00:00+00:00",
         "2026-10-02 22:00:00+00:00",
@@ -83,17 +93,17 @@
   },
   "boundary_contiguous": true,
   "trace_hours": 23,
-  "provider_zero_hours": 380,
+  "provider_zero_hours": 385,
   "late_rain_reports": 0,
   "live_feature_check": {
     "target_hours": 25,
-    "source_start_utc": "2026-10-17 01:00:00+00:00",
-    "source_end_utc": "2026-10-18 01:00:00+00:00",
+    "source_start_utc": "2026-10-17 06:00:00+00:00",
+    "source_end_utc": "2026-10-18 06:00:00+00:00",
     "missing_encodings": {
       "temperature_missing": 0.0,
       "wind_speed_missing": 0.0,
       "rain_missing_lag48": 0.0
     }
   },
-  "cache_sha256": "f0184f30216d81ea1d2584c3a877f23c3ec49fa07f66bd93fbe0046c6e49c4a4"
+  "cache_sha256": "268bff80cd753f4ce8cbdf0722679b426f76a49bad1fea125107bec02b7045e4"
 }

@@ -1,0 +1,75 @@
+name: Refresh observed weather
+
+on:
+  schedule:
+    - cron: '23 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/refresh-weather.yml'
+      - 'scripts/refresh_live_weather.py'
+      - 'bikebalance/weather_preparation.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: observed-weather-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install project dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Refresh and validate observed weather
+        run: python scripts/refresh_live_weather.py
+      - name: Preserve source data and refresh receipt
+        uses: actions/upload-artifact@v7
+        with:
+          name: observed-weather-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: error
+          path: |
+            data/live/weather/receipt.json
+            data/live/weather/weather_hourly.parquet
+            data/live/weather/meteostat_*.parquet
+            data/live/weather/iem_routine_*.body
+      - name: Publish weather cache for Streamlit
+        run: |
+          git add -- data/live/weather/weather_hourly.parquet data/live/weather/receipt.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Refresh observed weather for live ARIMAX'
+          git push origin HEAD:master
+      - name: Report coverage
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          receipt = json.loads(Path('data/live/weather/receipt.json').read_text())
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write('## Observed weather refreshed\n\n')
+              summary.write(f"Fetched at: {receipt['retrieved_at_utc']}\n\n")
+              summary.write(f"Coverage: {receipt['start_utc']} to {receipt['stop_utc_exclusive']} (exclusive)\n\n")
+              for name in ['temperature', 'wind_speed', 'rain_observed']:
+                  value = receipt['coverage'][name]
+                  summary.write(f"- {name}: latest observation {value['last_utc']}; {value['missing']} missing hours\n")
+              summary.write('\nModel parameters and historical trip data were not changed.\n')
+          PY

@@ -2,6 +2,16 @@
 
 [Open the live dashboard](https://nyc-demand-forecast-t6.streamlit.app/)
 
+## Automatic weather updates
+
+The `Refresh observed weather` GitHub Actions workflow runs every six hours (00:23, 06:23, 12:23 and 18:23 UTC), and can be started from **Actions → Refresh observed weather → Run workflow**. Scheduling begins after the workflow is published on `master`; GitHub can delay scheduled jobs. The PC does not need to stay on.
+
+Each successful run uses the established Meteostat LaGuardia and IEM LGA sources, validates UTC continuity, recent observations, existing-cache hashes and preservation of previously observed values, then commits only `data/live/weather/weather_hourly.parquet` and `receipt.json`. Streamlit Cloud's repository integration receives those updates. Raw provider responses and the receipt are retained as an Actions artifact for 30 days. No API keys are required for these weather sources; publishing uses GitHub's built-in token with repository contents permission. Branch rules must allow that bot to push; a rejected push fails visibly rather than forcing a change.
+
+The refresh covers weather after the frozen trip-history endpoint through the last completed hour, including month changes. It re-queries this small weather-only period to capture provider corrections. Missing observations and rainfall traces remain explicit. Failed retrieval or validation leaves the published cache unchanged. Monitor the latest workflow run and its coverage summary; a successful refresh is not a guarantee of model accuracy.
+
+Daily SARIMA forecasts move forward from saved model states without retraining on each dashboard visit. New forecast dates do not create new observed trips: the observation cutoff remains September 30, 2026. ARIMAX additionally uses refreshed weather lagged 48 hours. New monthly trip data and model retraining remain separate tasks.
+
 BikeBalance NYC forecasts hourly Citi Bike pickups and drop-offs at eight Manhattan stations. The Streamlit dashboard combines live station availability, forecasts for the next 24 hours, and historical model evaluation to explore station balancing needs.
 
 The submission covers three models: seasonal naive, daily SARIMA, and ARIMAX with lagged weather. SARIMA and ARIMAX selection, evaluation and deployment artifacts are complete and included in the submission. The dashboard compares saved evaluation results; no operational benefit has been established through a field trial.

@@ -1,4 +1,4 @@
-"""Refresh October observations only; never rebuild historical data or fit models."""
+"""Refresh observed weather after the frozen trip history; never fit models."""
 import json
 import sys
 from pathlib import Path
@@ -25,14 +25,27 @@ def atomic_write(path, writer):
 OUT = ROOT/'data/live/weather'
 
 
+def refresh_bounds(panel, now):
+    return panel.timestamp_utc.max()+pd.Timedelta(hours=1), now.floor('h')
+
+
+def require_recent_observations(weather, now):
+    required_hour = now.floor('h')-pd.Timedelta(hours=24)
+    for name, available in [('temperature', weather.temperature.notna()),
+                            ('wind', weather.wind_speed.notna()),
+                            ('rainfall', weather.precipitation_observed)]:
+        latest = weather.loc[available, 'timestamp_utc'].max()
+        require(pd.notna(latest) and latest >= required_hour,
+                f'{name} observations are too old for the next 24-hour forecast')
+
+
 def main():
     panel = load_panel()
     base_hash = digest(DATA/'modeling_dataset.parquet')
     now = pd.Timestamp.now(tz='UTC')
-    start = pd.Timestamp('2026-10-01', tz='America/New_York').tz_convert('UTC')
-    stop = min(now.floor('h'), pd.Timestamp('2026-11-01', tz='America/New_York').tz_convert('UTC'))
+    start, stop = refresh_bounds(panel, now)
     grid = pd.date_range(start, stop, freq='h', inclusive='left')
-    require(len(grid) > 0, 'No completed October hours available')
+    require(len(grid) > 0, 'No completed weather hours available after the historical boundary')
     require(panel.timestamp_utc.max()+pd.Timedelta(hours=1) == start, 'Historical boundary mismatch')
     OUT.mkdir(parents=True, exist_ok=True)
     tag = now.strftime('%Y%m%dT%H%M%SZ')
@@ -47,7 +60,7 @@ def main():
     met_path = OUT/f'meteostat_72503_{tag}.parquet'
     met.to_parquet(met_path)
     end = stop.ceil('D')
-    params = {'station':'LGA', 'data':'all', 'year1':2026, 'month1':10, 'day1':1,
+    params = {'station':'LGA', 'data':'all', 'year1':start.year, 'month1':start.month, 'day1':start.day,
               'year2':end.year, 'month2':end.month, 'day2':end.day, 'tz':'Etc/UTC',
               'format':'onlycomma', 'latlon':'yes', 'elev':'yes', 'missing':'M',
               'trace':'T', 'direct':'no', 'report_type':'3'}
@@ -70,11 +83,24 @@ def main():
         weather[column] = weather[column].astype(panel[column].dtype)
     weather['timestamp_utc'] = weather.timestamp.dt.tz_convert('UTC')
     require(weather.timestamp_utc.is_unique, 'Duplicate incremental UTC hours')
+    require_recent_observations(weather, now)
+    previous_path = OUT/'weather_hourly.parquet'
+    if previous_path.exists():
+        previous_receipt = json.loads((OUT/'receipt.json').read_text())
+        require(digest(previous_path) == previous_receipt['cache_sha256']
+                and previous_receipt['base_sha256'] == base_hash, 'Existing weather cache hash mismatch')
+        previous = pd.read_parquet(previous_path).set_index('timestamp_utc')
+        refreshed = weather.set_index('timestamp_utc').reindex(previous.index)
+        for column in ['temperature', 'wind_speed']:
+            require(not (previous[column].notna() & refreshed[column].isna()).any(),
+                    f'Refresh would discard previously observed {column}')
+        require(not (previous.precipitation_observed & ~refreshed.precipitation_observed.fillna(False)).any(),
+                'Refresh would discard previously observed rainfall')
     report = {'retrieved_at_utc':str(now), 'base_sha256':base_hash,
         'start_utc':str(start), 'stop_utc_exclusive':str(stop), 'hours':len(grid),
         'meteostat':{'station':'72503', 'model':False, 'flags':True, 'version':meteostat.__version__,
-                     'path':str(met_path.relative_to(ROOT)), 'sha256':digest(met_path)},
-        'iem':{'url':response.url, 'status':response.status_code, 'path':str(raw_path.relative_to(ROOT)),
+                     'path':met_path.relative_to(ROOT).as_posix(), 'sha256':digest(met_path)},
+        'iem':{'url':response.url, 'status':response.status_code, 'path':raw_path.relative_to(ROOT).as_posix(),
                'sha256':digest(raw_path)},
         'availability_assumption':'source hour + 6h < issuance; rain report < source hour + 6h; actual first publication times unknown',
         'coverage':{}, 'boundary_contiguous':True}
@@ -96,7 +122,7 @@ def main():
     require(digest(DATA/'modeling_dataset.parquet') == base_hash, 'Historical base changed')
     atomic_write(OUT/'weather_hourly.parquet', lambda p: weather.to_parquet(p,index=False))
     report['cache_sha256'] = digest(OUT/'weather_hourly.parquet')
-    atomic_write(OUT/'receipt.json', lambda p:p.write_text(json.dumps(report,indent=2),encoding='utf-8'))
+    atomic_write(OUT/'receipt.json', lambda p:p.write_text(json.dumps(report,indent=2),encoding='utf-8',newline='\n'))
     print(json.dumps({k:v for k,v in report.items() if k != 'coverage'},indent=2))
     print(json.dumps({k:{a:b for a,b in v.items() if a!='missing_utc'} for k,v in report['coverage'].items()},indent=2))
 

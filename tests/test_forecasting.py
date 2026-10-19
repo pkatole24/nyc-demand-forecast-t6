@@ -18,6 +18,20 @@ from bikebalance.evaluation import summarize
 
 
 class ForecastingBoundaries(unittest.TestCase):
+    def test_weather_refresh_crosses_month_boundary_and_rejects_stale_sources(self):
+        from scripts.refresh_live_weather import refresh_bounds, require_recent_observations
+        panel = pd.DataFrame({'timestamp_utc': [pd.Timestamp('2026-10-01T03:00Z')]})
+        now = pd.Timestamp('2026-11-02T12:30Z')
+        start, stop = refresh_bounds(panel, now)
+        self.assertEqual(start, pd.Timestamp('2026-10-01T04:00Z'))
+        self.assertEqual(stop, pd.Timestamp('2026-11-02T12:00Z'))
+        weather = pd.DataFrame({'timestamp_utc': pd.date_range(start, stop, freq='h', inclusive='left'),
+                                'temperature': 10., 'wind_speed': 5., 'precipitation_observed': True})
+        require_recent_observations(weather, now)
+        weather.loc[weather.timestamp_utc >= now.floor('h')-pd.Timedelta(hours=24), 'temperature'] = np.nan
+        with self.assertRaisesRegex(ValueError, 'temperature observations are too old'):
+            require_recent_observations(weather, now)
+
     def test_past_weather_is_cutoff_safe_and_preserves_trace_and_missingness(self):
         from bikebalance.weather import PastWeather
         index = pd.date_range('2025-01-01', periods=120, freq='h', tz='UTC')
