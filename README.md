@@ -1,5 +1,7 @@
 # BikeBalance NYC
 
+[Open the live dashboard](https://nyc-demand-forecast-t6.streamlit.app/)
+
 BikeBalance NYC forecasts hourly Citi Bike pickups and drop-offs at eight Manhattan stations. The Streamlit dashboard combines live station availability, forecasts for the next 24 hours, and historical model evaluation to explore station balancing needs.
 
 The submission covers three models: seasonal naive, daily SARIMA, and ARIMAX with lagged weather. SARIMA and ARIMAX selection, evaluation and deployment artifacts are complete and included in the submission. The dashboard compares saved evaluation results; no operational benefit has been established through a field trial.
