@@ -407,40 +407,56 @@ with tabs[views.index(page)]:
                         format_func=lambda v: 'Trips available through yesterday' if v == 'daily_updated' else 'Only published monthly trip files',
                         key='aggregate_regime')
                     aggregate = aggregate_test_metrics(panel, forecasts, aggregate_regime)
-                    st.caption('Across all eight stations for the full test period. Each model is checked against the same recorded hours. '
-                               'Changing the station or charts below does not change this summary.')
-                    st.caption('MAE is the average hourly miss in bikes. RMSE gives extra weight to large misses. Lower is better for both.')
-                    for column, family in zip(st.columns(len(FAMILIES)), FAMILIES):
-                        with column.container(border=True):
-                            st.markdown(f'**{LABELS[family]}**')
-                            for target in TARGET_LABELS:
-                                values = aggregate[target].get(family)
-                                st.markdown(f'**{TARGET_LABELS[target]}**')
-                                if values and values['mae'] is not None:
-                                    st.markdown(f'MAE **{values["mae"]:.2f}** · RMSE **{values["rmse"]:.2f}**')
-                                    st.caption(f'{values["scored_rows"]:,} hourly comparisons')
-                                else:
-                                    st.caption('Results not ready yet')
-                    if aggregate_regime == 'daily_updated':
-                        st.markdown('#### Additional models: saved test results')
-                        st.caption('Jacinta’s saved evaluation across all eight stations, January–September 2026, '
-                                   'assuming trips available through yesterday. The shared models’ scores match the summary above; '
-                                   'the additional models’ scores have not been independently reproduced. '
-                                   'These fixed summaries do not provide station-level curves or live forecasts.')
-                        saved_results = pd.read_csv(STORY/'test_leaderboard.csv')
-                        additional = [('sarimax_calendar', 'SARIMAX + weekly calendar'),
-                                      ('poisson', 'Poisson regression')]
-                        for column, (model, label) in zip(st.columns(2), additional):
-                            with column.container(border=True):
-                                st.markdown(f'**{label}**')
-                                st.markdown('**Net flow**')
-                                st.caption('Not available in the saved results')
-                                model_results = saved_results[saved_results.model.eq(model)].set_index('target')
-                                for target in ['pickups', 'dropoffs']:
-                                    values = model_results.loc[target]
-                                    st.markdown(f'**{TARGET_LABELS[target]}**')
-                                    st.markdown(f'MAE **{values.mae:.2f}** · RMSE **{values.rmse:.2f}**')
-                                    st.caption(f'{int(values.rows):,} hourly comparisons')
+                    st.caption('January–September 2026 · Eight stations. Changing the station or charts below does not change this summary.')
+                    st.caption('MAE measures the average hourly error. RMSE gives more weight to large errors. Lower is better for both.')
+                    targets = ['pickups', 'dropoffs', 'net_flow']
+                    columns = pd.MultiIndex.from_tuples(
+                        [(TARGET_LABELS[target], metric.upper()) for target in targets for metric in ['mae', 'rmse']])
+                    rows = []
+                    names = []
+                    counts = {target: set() for target in targets}
+                    for family in FAMILIES:
+                        names.append(LABELS[family])
+                        row = []
+                        for target in targets:
+                            values = aggregate[target].get(family)
+                            row.extend([values[metric] if values else None for metric in ['mae', 'rmse']])
+                            if values and values['mae'] is not None:
+                                counts[target].add(values['scored_rows'])
+                        rows.append(row)
+                    saved_results = pd.read_csv(STORY/'test_leaderboard.csv') if aggregate_regime == 'daily_updated' else None
+                    for model, label in [('sarimax_calendar', 'SARIMAX + weekly calendar'), ('poisson', 'Poisson regression')]:
+                        names.append(label)
+                        row = []
+                        for target in targets:
+                            if saved_results is None:
+                                row.extend(['Not evaluated', 'Not evaluated'])
+                            elif target == 'net_flow':
+                                row.extend([None, None])
+                            else:
+                                values = saved_results[saved_results.model.eq(model) & saved_results.target.eq(target)].iloc[0]
+                                row.extend([values.mae, values.rmse])
+                                counts[target].add(int(values.rows))
+                        rows.append(row)
+                    comparison = pd.DataFrame(rows, index=pd.Index(names, name='Model'), columns=columns)
+
+                    def highlight_best(values):
+                        numeric = pd.to_numeric(values, errors='coerce')
+                        return ['font-weight: bold; background-color: rgba(42, 120, 214, 0.15)'
+                                if pd.notna(value) and value == numeric.min() else '' for value in numeric]
+
+                    styles = comparison.apply(highlight_best)
+                    display = comparison.map(lambda value: '—' if pd.isna(value) else
+                                             value if isinstance(value, str) else f'{value:.2f}')
+                    st.table(display.style.apply(lambda _: styles, axis=None).set_properties(**{'text-align': 'right'}))
+                    coverage = []
+                    for target in targets:
+                        values = sorted(counts[target])
+                        amount = f'{values[0]:,}' if len(values) == 1 else '–'.join(f'{value:,}' for value in values)
+                        coverage.append(f'{TARGET_LABELS[target]}: {amount or "0"}')
+                    st.caption('Hourly comparisons per reported metric — '+ '; '.join(coverage)+'.')
+                    st.caption('Bold, shaded values mark the lowest error in each column. “—” means results unavailable; '
+                               '“Not evaluated” means the model was not evaluated under this regime.')
                 st.divider()
                 st.markdown('### Station detail')
                 station = st.selectbox('Station', list(stations.index), format_func=lambda value: stations.loc[value, 'station_name'])

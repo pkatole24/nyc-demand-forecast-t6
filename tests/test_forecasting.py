@@ -251,16 +251,19 @@ class DashboardBoundaries(unittest.TestCase):
             self.assertEqual(len(app.exception), 0)
             self.assertEqual(len(app.get('plotly_chart')), 3)
 
-            def additional_results_visible():
-                return any('Additional models: saved test results' in element.value for element in app.markdown)
-
-            self.assertTrue(additional_results_visible())
+            daily_comparison = app.table[0].value
+            self.assertEqual(len(daily_comparison), 5)
+            self.assertEqual(daily_comparison.loc['Poisson regression', ('Pickups', 'RMSE')], '6.63')
+            self.assertEqual(daily_comparison.loc['Poisson regression', ('Net flow', 'MAE')], '—')
             app.selectbox(key='aggregate_regime').select('publication_lag').run()
             self.assertEqual(len(app.exception), 0)
-            self.assertFalse(additional_results_visible())
+            monthly_comparison = app.table[0].value
+            self.assertEqual(list(daily_comparison.index), list(monthly_comparison.index))
+            self.assertTrue(monthly_comparison.loc['Poisson regression'].eq('Not evaluated').all())
+            self.assertTrue(monthly_comparison.loc['SARIMAX + weekly calendar'].eq('Not evaluated').all())
             app.selectbox(key='aggregate_regime').select('daily_updated').run()
             self.assertEqual(len(app.exception), 0)
-            self.assertTrue(additional_results_visible())
+            pd.testing.assert_frame_equal(app.table[0].value, daily_comparison)
 
     def test_shortfall_uses_usable_docks_and_rejects_stale_inventory(self):
         from dashboard_support import station_summary
