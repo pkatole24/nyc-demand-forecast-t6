@@ -95,3 +95,18 @@ data/live/weather/*
 !artifacts/runs/4973374d0ca6eb85/run.json
 !data/live/weather/receipt.json
 !data/live/weather/weather_hourly.parquet
+
+# Predictor study, SARIMAX and frozen-test evaluation (results in data/story/)
+!scripts/collect_nyc_open_data.py
+!scripts/predictor_common.py
+!scripts/build_collision_features.py
+!scripts/build_congestion_features.py
+!scripts/build_subway_features.py
+!scripts/build_event_features.py
+!scripts/build_enriched_panel.py
+!scripts/evaluate_predictors.py
+!scripts/evaluate_sarimax.py
+!scripts/evaluate_test.py
+!scripts/plot_forecasts.py
+!scripts/build_story_tables.py
+!.env.example

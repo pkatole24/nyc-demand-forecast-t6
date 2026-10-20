@@ -1,0 +1,8 @@
+model,label,source,specification,dropoffs_rmse,dropoffs_mae,dropoffs_rows,pickups_rmse,pickups_mae,pickups_rows,dropoffs_dm_p_vs_last_week,pickups_dm_p_vs_last_week
+seasonal_naive,Last-week baseline,team,Same local hour one week earlier,7.845381898858696,4.834866316270567,70016,7.927334540966995,4.850944716585024,70021,,
+daily_sarima,Daily pattern (SARIMA),team,"SARIMA per station, 24-hour seasonality, refit monthly",8.049522312210653,5.105284033754307,70016,8.268132747137308,5.197981371196427,70021,0.23873185379195838,0.0594029603091888
+weather_arimax,Weather + calendar (ARIMAX),team,"ARIMAX per station, weather lagged 48 h, refit monthly",8.054688543934802,5.375545727731492,70016,8.047913054409587,5.339937436001442,70021,0.22757934557683357,0.48498162825759195
+same_hour_mean_28d,Same-hour 28-day average,predictor study,Mean of the same local hour over the previous 28 days,7.262235236269269,4.6286357713852855,70016,7.402535910638639,4.6703777037712575,70021,7.670017061335087e-05,0.0005370745429903475
+sarima,"SARIMA (1,0,1)(1,1,1)24",predictor study,"Per station, parameters fixed on 2024, state updated hourly",7.035143641424044,4.505550370520033,70016,7.166523864217877,4.5617318799868425,70021,7.725365697573403e-07,7.694419793921829e-06
+sarimax_calendar,SARIMAX + weekly calendar,predictor study,"SARIMA (1,0,1)(1,1,1)24 + weekly Fourier and off-day terms",6.214244289317686,3.990089881374609,70016,6.272429621009203,4.036935807979683,70021,6.970191353746123e-17,5.511965229784216e-16
+baseline,Poisson regression,predictor study,"Pooled count model: station x hour effects + recent-demand lags, refit monthly",5.994336677402007,3.8042655994146894,70016,6.123420717697089,3.835169690354719,70021,3.395040812485831e-22,1.0964685424993658e-20

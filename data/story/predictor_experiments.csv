@@ -1,0 +1,5 @@
+family,label,best_variant,pickups_rmse_change_pct,dropoffs_rmse_change_pct,min_dm_p
+collisions,Nearby traffic collisions,+coll_all_1000m_28d,-0.07174289613715024,-0.06817870939528348,0.3194819528900879
+subway,Nearby subway ridership,+subway_ridership,-0.015878917171774365,-0.02191687215791216,0.8749098593152156
+events,Permitted street events,+events_street,0.005734371127363858,-0.005030398814109827,0.94615006830174
+congestion,Congestion pricing,+crz_active,0.06960772318178599,0.0650545759463883,0.4703156757677427

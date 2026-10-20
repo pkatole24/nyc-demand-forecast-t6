@@ -1,0 +1,10 @@
+{
+  "frozen_on_validation": "2025",
+  "models": {
+    "poisson": "Poisson GLM baseline: station x hour, off-day x hour, weekday, month, log1p lags 24h/168h/28-day same-hour mean; refit monthly",
+    "sarimax_calendar": "SARIMAX(1, 0, 1)(1, 1, 1, 24) + weekly Fourier (K=4) + off-day x daily Fourier (K=3); estimated 2024-02-01..2025-12-31"
+  },
+  "regime": "daily_updated: day-ahead from New York midnight, trips known through the previous day",
+  "panel_sha256": "1e82681e689b751d14e3580cd95d016e3c68eab7338f3677ef1b21e4a1c74735",
+  "frozen_at_utc": "2026-10-20T02:07:01.303651+00:00"
+}
