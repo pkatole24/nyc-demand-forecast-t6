@@ -231,11 +231,16 @@ class DashboardBoundaries(unittest.TestCase):
             app = AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py'), default_timeout=30).run()
             self.assertEqual(len(app.exception), 0, [str(x) for x in app.exception])
             self.assertTrue(any('BikeBalance' in element.value for element in app.title))
+            self.assertTrue(any('Can we predict' in element.value for element in app.subheader))
+            app.session_state['view'] = 'Live station overview'
+            app.run()
+            self.assertEqual(len(app.exception), 0)
             self.assertEqual(app.metric[0].value, 'Unavailable')
             app.session_state['view'] = 'Next 24 hours'
             app.run()
             self.assertEqual(len(app.exception), 0)
             self.assertEqual(len(app.get('plotly_chart')), 3)
+
             app.checkbox[0].uncheck()
             app.checkbox[2].check().run()
             self.assertEqual(len(app.exception), 0)
@@ -245,6 +250,17 @@ class DashboardBoundaries(unittest.TestCase):
             app.run()
             self.assertEqual(len(app.exception), 0)
             self.assertEqual(len(app.get('plotly_chart')), 3)
+
+            def additional_results_visible():
+                return any('Additional models: saved test results' in element.value for element in app.markdown)
+
+            self.assertTrue(additional_results_visible())
+            app.selectbox(key='aggregate_regime').select('publication_lag').run()
+            self.assertEqual(len(app.exception), 0)
+            self.assertFalse(additional_results_visible())
+            app.selectbox(key='aggregate_regime').select('daily_updated').run()
+            self.assertEqual(len(app.exception), 0)
+            self.assertTrue(additional_results_visible())
 
     def test_shortfall_uses_usable_docks_and_rejects_stale_inventory(self):
         from dashboard_support import station_summary

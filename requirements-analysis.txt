@@ -1,0 +1,5 @@
+# Predictor evaluation and figures (scripts/), on top of requirements.txt.
+-r requirements.txt
+statsmodels==0.15.0
+scipy==1.18.1
+matplotlib==3.11.2
