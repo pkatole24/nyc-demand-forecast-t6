@@ -12,7 +12,7 @@ The panel has 192,760 rows across eight Manhattan stations and 24,095 unique hou
 | validation | 2025 | 70,080 |
 | test | January-September 2026 | 52,408 |
 
-The cached official source check on October 13, 2026 found all 33 requested monthly archives. Original preparation processed 125,217,844 source records across 141 extracted CSVs. These are recorded preparation results; raw archive bytes were not rehashed during the modeling-base handoff. Cached archive LastModified values describe revisions, not verified original publication dates.
+The cached official source check on October 13, 2026 found all 33 requested monthly archives. Original preparation processed 125,217,844 source records across 141 extracted CSVs. These are recorded preparation results; raw archive bytes were not rehashed during the modeling-base validation. Cached archive LastModified values describe revisions, not verified original publication dates.
 
 ## Station details and geographic joins
 
@@ -50,11 +50,11 @@ Use UTC instants as hourly join keys. Local spring-forward dates contain 23 hour
 
 February 23, 2026 has no published valid systemwide pickups and retains its audit flag. The original preparation associated this with storm disruption evidence, but exact reopening times are not established. Published zeros can reflect closures or source omissions and do not establish zero unconstrained demand. The flag is retrospective and unavailable as a known-ahead predictor.
 
-## Weather in the shared base
+## Weather in the included historical base
 
 Temperature and wind use Meteostat LaGuardia station 72503 observations. Rainfall uses audited IEM LGA routine METAR reports, replacing the original preparation's Meteostat rainfall. One airport series is replicated across eight stations; it is a regional covariate, not street-level weather at each station.
 
-Coverage measured directly from the shared panel on October 14, 2026, before station replication:
+Coverage measured directly from the included historical panel on October 14, 2026, before station replication:
 
 | Field | Available hours / 24,095 | Coverage | Missing hours |
 | --- | ---: | ---: | ---: |
@@ -73,7 +73,7 @@ Realized historical weather may be revised and is not available ahead of the for
 
 ## Preparation checks and evidence limits
 
-Saved preparation validation passed checks for complete grids, unique station/UTC keys, weather join cardinality, target equality/conservation, precipitation flags, station/crosswalk consistency and cached source integrity. During the team handoff, all eight local modeling outputs matched manifest hashes and the shared panel had zero duplicate station/timestamp keys. The original preparation bundle contains optional inventory and unresolved-total Parquets; only the main historical panel is distributed from that preparation bundle.
+Saved preparation validation passed checks for complete grids, unique station/UTC keys, weather join cardinality, target equality/conservation, precipitation flags, station/crosswalk consistency and cached source integrity. Saved preparation validation recorded matching manifest hashes for all eight outputs in the original local modeling bundle and zero duplicate station/timestamp keys in the included historical panel. The original preparation bundle contains optional inventory and unresolved-total Parquets; only the main historical panel is distributed from that preparation bundle.
 
 Original preprocessing handled 512 cross-month repeated-ID excess records, including 29 conflicting variants, with deterministic global deduplication. Missing source endpoint IDs excluded only the affected endpoint: 70,549 starts and 359,809 ends. These source-level counts are recorded preparation evidence, not a fresh scan of raw archives. Trips crossing the final requested boundary may be right-censored if they appear in a later archive; that loss is unquantified.
 

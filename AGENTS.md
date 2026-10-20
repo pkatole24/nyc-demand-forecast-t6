@@ -2,9 +2,9 @@
 
 ## Scope and entry points
 
-Develop hourly pickup/dropoff forecasts for eight Manhattan Citi Bike stations, evaluate additional predictors and explore station balancing scenarios. The project includes a prepared historical panel, a Streamlit dashboard, live GBFS integration and three forecasting implementations: seasonal naive, daily SARIMA and ARIMAX with lagged weather. Fitted-model and evaluation artifacts are complete and included in the submission; model comparisons require their saved evaluation receipts, and operational benefit remains unverified.
+Develop hourly pickup/dropoff forecasts for eight Manhattan Citi Bike stations, evaluate additional predictors and explore station balancing scenarios. The project includes a prepared historical panel, a Streamlit dashboard, live GBFS integration and three deployed forecasting implementations: seasonal naive, daily SARIMA and ARIMAX with lagged weather. Additional research includes calendar SARIMAX, pooled Poisson regression, notebook benchmarks and city-data predictor studies. Deployed fitted-model and evaluation artifacts are included; research summaries retain their study-specific scope. Model comparisons require their saved evaluation evidence, and operational benefit remains unverified.
 
-Use README.md for environment setup and loading. Before changing predictors, target handling or evaluation, read data/modeling/data_quality_report.md for measured evidence and selection limits. For rainfall transformations, read data/modeling/README.md for report-clock and observation semantics. Use the submitted repository and its documented artifacts as the reproducible project boundary.
+Use README.md for product scope, repository contents and the evaluation summary. Before changing predictors, target handling or evaluation, read data/modeling/data_quality_report.md for measured evidence and selection limits. For rainfall transformations, read data/modeling/README.md for report-clock and observation semantics. Use the submitted repository and its documented artifacts as the reproducible project boundary.
 
 ## Base dataset and coverage
 
@@ -36,11 +36,11 @@ Use data/modeling/selected_stations.csv for names, historical coordinates, descr
 
 Station eligibility uses full-period continuity, including 2026; disclose this retrospective filter in evaluation. Usage and selection statistics use 2024-2025, including validation. Recompute any such predictor from prior history rather than using the saved statistic as if it were known at the start of 2025. Commuter/recreational labels are behavioral proxies, not verified trip purposes.
 
-Preserve 30 missing pickup bins and 32 missing dropoff bins due to unresolved source timestamps in repeated fall-back hours. Use direction-specific uncertainty flags and preserve published zeros. Local days contain 23, 24 or 25 hours; UTC instants remain unique. The separately retained unresolved totals are not in the shared clone and cannot be allocated to specific hours.
+Preserve 30 missing pickup bins and 32 missing dropoff bins due to unresolved source timestamps in repeated fall-back hours. Use direction-specific uncertainty flags and preserve published zeros. Local days contain 23, 24 or 25 hours; UTC instants remain unique. The separately retained unresolved totals are not in the repository and cannot be allocated to specific hours.
 
 net_flow = dropoffs - pickups describes endpoints, not observed inventory, shortage probability or unmet demand. February 23, 2026 has a retrospective systemwide no-published-pickups flag; it is not a verified hourly closure schedule or a known-ahead feature. Federal holidays do not cover all school closures/local events. Archive LastModified values are revision dates, not verified original publication times. The final archive boundary may censor trips represented in a later month; the loss is unquantified.
 
-## Implementation and handoff
+## Implementation and contribution rules
 
 Challenge unsupported assumptions and surface meaningful design choices. Grow a working end-to-end implementation in small layers, separate concerns and use existing dependencies before introducing new ones. Remove obsolete paths instead of adding compatibility layers or speculative abstractions.
 
