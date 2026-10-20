@@ -14,15 +14,20 @@ Daily SARIMA forecasts move forward from saved model states without retraining o
 
 BikeBalance NYC forecasts hourly Citi Bike pickups and drop-offs at eight Manhattan stations. The Streamlit dashboard combines live station availability, forecasts for the next 24 hours, and historical model evaluation to explore station balancing needs.
 
-The submission covers three models: seasonal naive, daily SARIMA, and ARIMAX with lagged weather. SARIMA and ARIMAX selection, evaluation and deployment artifacts are complete and included in the submission. The dashboard compares saved evaluation results; no operational benefit has been established through a field trial.
+The live engine offers seasonal naive, daily SARIMA, and ARIMAX with lagged weather. The repository also includes the seasonal-naive/moving-average notebook, weather notebook and station comparison, calendar SARIMAX, pooled Poisson regression, and city-data predictor experiments. Research results retain their own horizons, periods and information regimes. No operational benefit has been established through a field trial.
 
 ## Dashboard
 
 | View | What it shows |
 | --- | --- |
-| Live station overview | Available bikes, empty docks and station capacity for eight stations, with live status refreshed every 60 seconds. A model selector controls estimated extra bikes or empty docks needed over the next 24 hours. |
-| Next 24 hours | Station-level pickup, drop-off and net-flow forecasts, with selectable model comparisons and timestamps in New York time. |
-| Test evaluation | January–September 2026 actuals and forecasts, pooled all-station MAE/RMSE and scored station-hours, plus station-level charts and metrics. Controls select the information regime and visible period. |
+| General overview | Original project narrative, weekday station patterns, 2025/2026 model comparisons and expandable city-data RMSE/significance results. |
+| Live station outlook | Current conditions and a station attention table, refreshed every 60 seconds. Modeled bike/dock gaps are separate from observed alerts; select a station to open its forecast. |
+| Forecast explorer | Pickups and returns together, signed net change, exact forecast window and trip-history cutoff, with a separate deployed-model comparison. |
+| Research & validation | 2025 selection and 2026 test summaries, model specifications, source links and historical replay of deployed models. |
+
+In the saved daily-updated 2026 test comparison, pooled Poisson reduces pickup RMSE from 8.82 to 6.63 and return RMSE from 8.63 to 6.49 versus the last-week baseline, on 52,400 shared reported station-hours per target. Calendar SARIMAX has similar observed RMSE. These research models are not deployed in the live engine; intermediate predictor-study panels and caches are not included in the clone.
+
+Codex assisted the dashboard redesign, result presentation and local verification. Other team AI-tool use should be disclosed by the relevant contributors.
 
 Live status uses official Citi Bike GBFS feeds. Reports must pass freshness, operational-status and identity checks. Low-availability labels use 10% of usable capacity, with a minimum threshold of two. Unavailable or invalid reports are shown explicitly.
 

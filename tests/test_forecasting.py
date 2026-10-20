@@ -232,24 +232,25 @@ class DashboardBoundaries(unittest.TestCase):
             self.assertEqual(len(app.exception), 0, [str(x) for x in app.exception])
             self.assertTrue(any('BikeBalance' in element.value for element in app.title))
             self.assertTrue(any('Can we predict' in element.value for element in app.subheader))
-            app.session_state['view'] = 'Live station overview'
+            app.session_state['view'] = 'Live station outlook'
             app.run()
             self.assertEqual(len(app.exception), 0)
             self.assertEqual(app.metric[0].value, 'Unavailable')
-            app.session_state['view'] = 'Next 24 hours'
+            app.session_state['view'] = 'Forecast explorer'
             app.run()
             self.assertEqual(len(app.exception), 0)
             self.assertEqual(len(app.get('plotly_chart')), 3)
 
             app.checkbox[0].uncheck()
-            app.checkbox[2].check().run()
+            app.checkbox[2].check()
+            app.radio(key='outlook_family').set_value('weather_arimax').run()
             self.assertEqual(len(app.exception), 0)
             self.assertTrue(any('not ready' in element.value for element in app.info))
             self.assertEqual(len(app.get('plotly_chart')), 0)
-            app.session_state['view'] = 'Test evaluation'
+            app.session_state['view'] = 'Research & validation'
             app.run()
             self.assertEqual(len(app.exception), 0)
-            self.assertEqual(len(app.get('plotly_chart')), 3)
+            self.assertEqual(len(app.get('plotly_chart')), 4)
 
             daily_comparison = app.table[0].value
             self.assertEqual(len(daily_comparison), 5)
@@ -264,6 +265,43 @@ class DashboardBoundaries(unittest.TestCase):
             app.selectbox(key='aggregate_regime').select('daily_updated').run()
             self.assertEqual(len(app.exception), 0)
             pd.testing.assert_frame_equal(app.table[0].value, daily_comparison)
+
+            app.radio(key='research_period').set_value('validation').run()
+            self.assertEqual(len(app.exception), 0)
+            self.assertEqual(len(app.dataframe[0].value), 14)
+            self.assertEqual(app.selectbox(key='aggregate_regime').value, 'daily_updated')
+
+    def test_research_summary_rejects_incomparable_or_duplicate_scores(self):
+        from dashboard_research import load_results
+        frame = load_results('test').drop(columns=['period', 'regime', 'horizon'])
+        with patch('dashboard_research.pd.read_csv', return_value=frame.assign(rows=np.arange(len(frame))+1)):
+            with self.assertRaisesRegex(ValueError, 'support'):
+                load_results('test')
+        with patch('dashboard_research.pd.read_csv', return_value=pd.concat([frame, frame.iloc[[0]]])):
+            with self.assertRaisesRegex(ValueError, 'duplicate'):
+                load_results('test')
+
+    def test_missing_research_tables_do_not_block_live_or_historical_views(self):
+        from streamlit.testing.v1 import AppTest
+        original = pd.read_csv
+
+        def missing_story(path, *args, **kwargs):
+            if Path(path).parent.name == 'story':
+                raise FileNotFoundError('Research summary missing')
+            return original(path, *args, **kwargs)
+
+        with patch('pandas.read_csv', side_effect=missing_story), \
+             patch('requests.get', side_effect=RuntimeError('No network')):
+            app = AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py'), default_timeout=30).run()
+            self.assertEqual(len(app.exception), 0)
+            app.session_state['view'] = 'Live station outlook'
+            app.run()
+            self.assertEqual(len(app.exception), 0)
+            self.assertEqual(app.metric[0].value, 'Unavailable')
+            app.session_state['view'] = 'Research & validation'
+            app.run()
+            self.assertEqual(len(app.exception), 0)
+            self.assertEqual(len(app.get('plotly_chart')), 3)
 
     def test_shortfall_uses_usable_docks_and_rejects_stale_inventory(self):
         from dashboard_support import station_summary
