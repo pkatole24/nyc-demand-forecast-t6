@@ -1,61 +1,71 @@
 {
-  "retrieved_at_utc": "2026-10-25 11:48:58.152927+00:00",
+  "retrieved_at_utc": "2026-10-25 16:37:18.902556+00:00",
   "base_sha256": "8ea206540774c1220963f766e99d47490484a35eb93f7d30d867f696373ea78b",
   "start_utc": "2026-10-01 04:00:00+00:00",
-  "stop_utc_exclusive": "2026-10-25 11:00:00+00:00",
-  "hours": 583,
+  "stop_utc_exclusive": "2026-10-25 16:00:00+00:00",
+  "hours": 588,
   "meteostat": {
     "station": "72503",
     "model": false,
     "flags": true,
     "version": "1.7.6",
-    "path": "data/live/weather/meteostat_72503_20261025T114858Z.parquet",
+    "path": "data/live/weather/meteostat_72503_20261025T163718Z.parquet",
     "sha256": "89743aee06ecb5065421600c6877bc7187ee0988bcb85b31c1f4e2c428ca7b09"
   },
   "iem": {
     "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=LGA&data=all&year1=2026&month1=10&day1=1&year2=2026&month2=10&day2=26&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3",
     "status": 200,
-    "path": "data/live/weather/iem_routine_LGA_20261025T114858Z.body",
-    "sha256": "92d005db2e94ae95db2e56dac205d312d3e13e536df38dc4176b0e145310d251"
+    "path": "data/live/weather/iem_routine_LGA_20261025T163718Z.body",
+    "sha256": "231e93c8bc3873f7d0d013791e87fabc850991da93fee0817681f90074a4d37c"
   },
   "availability_assumption": "source hour + 6h < issuance; rain report < source hour + 6h; actual first publication times unknown",
   "coverage": {
     "temperature": {
       "available": 579,
-      "missing": 4,
+      "missing": 9,
       "last_utc": "2026-10-25 06:00:00+00:00",
-      "age_hours": 5.816153590833333,
+      "age_hours": 10.621917376666667,
       "missing_utc": [
         "2026-10-25 07:00:00+00:00",
         "2026-10-25 08:00:00+00:00",
         "2026-10-25 09:00:00+00:00",
-        "2026-10-25 10:00:00+00:00"
+        "2026-10-25 10:00:00+00:00",
+        "2026-10-25 11:00:00+00:00",
+        "2026-10-25 12:00:00+00:00",
+        "2026-10-25 13:00:00+00:00",
+        "2026-10-25 14:00:00+00:00",
+        "2026-10-25 15:00:00+00:00"
       ]
     },
     "wind_speed": {
       "available": 579,
-      "missing": 4,
+      "missing": 9,
       "last_utc": "2026-10-25 06:00:00+00:00",
-      "age_hours": 5.816153590833333,
+      "age_hours": 10.621917376666667,
       "missing_utc": [
         "2026-10-25 07:00:00+00:00",
         "2026-10-25 08:00:00+00:00",
         "2026-10-25 09:00:00+00:00",
-        "2026-10-25 10:00:00+00:00"
+        "2026-10-25 10:00:00+00:00",
+        "2026-10-25 11:00:00+00:00",
+        "2026-10-25 12:00:00+00:00",
+        "2026-10-25 13:00:00+00:00",
+        "2026-10-25 14:00:00+00:00",
+        "2026-10-25 15:00:00+00:00"
       ]
     },
     "rain_observed": {
-      "available": 583,
+      "available": 588,
       "missing": 0,
-      "last_utc": "2026-10-25 10:00:00+00:00",
-      "age_hours": 1.8161535908333333,
+      "last_utc": "2026-10-25 15:00:00+00:00",
+      "age_hours": 1.6219173766666666,
       "missing_utc": []
     },
     "rain_numeric": {
-      "available": 560,
+      "available": 565,
       "missing": 23,
-      "last_utc": "2026-10-25 10:00:00+00:00",
-      "age_hours": 1.8161535908333333,
+      "last_utc": "2026-10-25 15:00:00+00:00",
+      "age_hours": 1.6219173766666666,
       "missing_utc": [
         "2026-10-01 22:00:00+00:00",
         "2026-10-02 22:00:00+00:00",
@@ -85,17 +95,17 @@
   },
   "boundary_contiguous": true,
   "trace_hours": 23,
-  "provider_zero_hours": 534,
+  "provider_zero_hours": 539,
   "late_rain_reports": 0,
   "live_feature_check": {
     "target_hours": 25,
-    "source_start_utc": "2026-10-23 11:00:00+00:00",
-    "source_end_utc": "2026-10-24 11:00:00+00:00",
+    "source_start_utc": "2026-10-23 16:00:00+00:00",
+    "source_end_utc": "2026-10-24 16:00:00+00:00",
     "missing_encodings": {
       "temperature_missing": 0.0,
       "wind_speed_missing": 0.0,
       "rain_missing_lag48": 0.0
     }
   },
-  "cache_sha256": "4e0dacccfeec5f722878f2666a7220bcf2d01241a3087e6a214279e43b61bb40"
+  "cache_sha256": "ea5a253164860ba0e72c8d416f82fb12cc8483c1564f4cbbc0741592765aa7f7"
 }
