@@ -1,0 +1,9 @@
+{
+  "frozen_on_validation": "fixed a priori (zero-shot, no tuning on 2024 or 2025)",
+  "models": {
+    "chronos": "amazon/chronos-bolt-small, pretrained foundation model, no fine-tuning; last 2,048 hourly observations per station and target as context; mean forecast clipped at zero (scripts/forecast_chronos.py)"
+  },
+  "regime": "daily_updated: day-ahead from New York midnight, trips known through the previous day",
+  "panel_sha256": "698a44979b552dc2003222aaa0a74650f97e127bef6db4e180bd680e0051a8dc",
+  "frozen_at_utc": "2026-10-26T00:28:59.816475+00:00"
+}

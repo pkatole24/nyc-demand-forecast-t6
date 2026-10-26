@@ -1,0 +1,5 @@
+# Separate environment for the zero-shot AI forecasts (scripts/forecast_chronos.py); not needed by the dashboard.
+chronos-forecasting==2.3.2
+torch==2.14.1
+pandas==3.0.6
+pyarrow==26.0.0

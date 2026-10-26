@@ -1,0 +1,183 @@
+{
+  "family": "sarimax_calendar",
+  "created_at_utc": "2026-10-25T14:05:52.377636+00:00",
+  "base_sha256": "8ea206540774c1220963f766e99d47490484a35eb93f7d30d867f696373ea78b",
+  "specification": {
+    "order": [
+      1,
+      0,
+      1
+    ],
+    "seasonal_order": [
+      1,
+      1,
+      1,
+      24
+    ],
+    "weekly_harmonics": 4,
+    "offday_daily_harmonics": 3
+  },
+  "selection": "frozen on 2025 validation; 2026 test RMSE pickups 6.67 / drop-offs 6.59 (data/story/test_leaderboard.csv)",
+  "models": {
+    "5184.08/dropoffs": {
+      "artifact": "5184.08_dropoffs.npz",
+      "sha256": "990daf64a728509a1c2aeca13f45cfb0879c8a00d960a249cc68c06e7ba8e390",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 150648.70309006382,
+      "fit_seconds": 1212.7
+    },
+    "5184.08/pickups": {
+      "artifact": "5184.08_pickups.npz",
+      "sha256": "36b3f3b954cd705aadb26d0ba6654c60dcacaf92828c0564f23840157743a3ec",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 149476.5408864067,
+      "fit_seconds": 1258.2
+    },
+    "5297.02/dropoffs": {
+      "artifact": "5297.02_dropoffs.npz",
+      "sha256": "92723c9f0436912adc7ba22e433efba3b10f0fd9752fd48b58db5bf587d665a8",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 150988.57402331405,
+      "fit_seconds": 1157.5
+    },
+    "5297.02/pickups": {
+      "artifact": "5297.02_pickups.npz",
+      "sha256": "e5998dd6b5d7bd8f885da7543798ba9635b3d816a6472ac203edefd131e04e53",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23349,
+      "converged": true,
+      "aic": 150813.86393796807,
+      "fit_seconds": 1189.6
+    },
+    "5696.03/dropoffs": {
+      "artifact": "5696.03_dropoffs.npz",
+      "sha256": "ba5c1f722d192cb6d7b1b953f4a62b8e7be9ec3e9686d75c845c78a9550d5c40",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 145118.26353313914,
+      "fit_seconds": 1153.1
+    },
+    "5696.03/pickups": {
+      "artifact": "5696.03_pickups.npz",
+      "sha256": "83079f0abd7c9314f15ca0b0a3f268f6d005e973e05905c83090c7832e00d1e0",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 144112.86394027318,
+      "fit_seconds": 1078.8
+    },
+    "5805.07/dropoffs": {
+      "artifact": "5805.07_dropoffs.npz",
+      "sha256": "25dd3d828f3e87bffe2dce66550a02a72c653a2b40535af44251618984535297",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 140209.88147590525,
+      "fit_seconds": 931.8
+    },
+    "5805.07/pickups": {
+      "artifact": "5805.07_pickups.npz",
+      "sha256": "948826806fc08857ce8f07701f0f13645ad7c4f309a7feb2ff7bd4bc8c353d43",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 137309.69379604486,
+      "fit_seconds": 1032.2
+    },
+    "6197.08/dropoffs": {
+      "artifact": "6197.08_dropoffs.npz",
+      "sha256": "85d677899e80ffc3e7ddfc9bc9b36bf3fe6a7122e78cc9508173fbc529ad204d",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 143081.8569629342,
+      "fit_seconds": 1024.8
+    },
+    "6197.08/pickups": {
+      "artifact": "6197.08_pickups.npz",
+      "sha256": "2b808b94e396d7997b009643eb21c89aa71e62f368a991ec5073a6411fc0b0db",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 148215.3923371773,
+      "fit_seconds": 1210.1
+    },
+    "6765.01/dropoffs": {
+      "artifact": "6765.01_dropoffs.npz",
+      "sha256": "f5dab4143801aae348028cd494d59f76edb8f9cbbe30f097d83b128d5b392575",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 155467.43087650172,
+      "fit_seconds": 1177.6
+    },
+    "6765.01/pickups": {
+      "artifact": "6765.01_pickups.npz",
+      "sha256": "35630113700fa2952222d5779016c355225e991e93cef07a1fff5854d898f264",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 155270.89485658647,
+      "fit_seconds": 1368.6
+    },
+    "6955.05/dropoffs": {
+      "artifact": "6955.05_dropoffs.npz",
+      "sha256": "e696a16345d20e8d0f5ebe24df708a2267d4ee3c3bd1ccdaf4625bb0516d4eeb",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 136805.68048155122,
+      "fit_seconds": 717.3
+    },
+    "6955.05/pickups": {
+      "artifact": "6955.05_pickups.npz",
+      "sha256": "8170c1170183ba3e7ede9e376f5eba2762c0e908cdd6931fe0b3991862f0013a",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 137941.4131499914,
+      "fit_seconds": 949.6
+    },
+    "7059.08/dropoffs": {
+      "artifact": "7059.08_dropoffs.npz",
+      "sha256": "4495c8f0996d8e516080d1c7cbe184e5925b4325104bdb0757f4555fdbc50536",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 142245.3484155509,
+      "fit_seconds": 620.0
+    },
+    "7059.08/pickups": {
+      "artifact": "7059.08_pickups.npz",
+      "sha256": "18d19b41c397ad58145b87aa735e425ee3028768aa966bf2d6418ad7491eceb4",
+      "last_observation": "2026-10-01 03:00:00+00:00",
+      "fit_start": "2024-02-01 05:00:00+00:00",
+      "observations": 23347,
+      "converged": true,
+      "aic": 142802.2384245732,
+      "fit_seconds": 836.3
+    }
+  }
+}

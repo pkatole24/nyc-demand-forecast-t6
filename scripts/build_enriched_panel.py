@@ -1,7 +1,8 @@
 """Join every predictor feature table to the hash-verified base panel.
 
 Each join is a many-to-one left join on the explicit America/New_York local
-date (plus station_id for station-level tables) and must preserve row count,
+date (plus station_id for station-level tables), or on timestamp_utc for the
+citywide hourly weather forecasts, and must preserve row count,
 station/UTC key uniqueness and target values. The base file is never modified.
 
 Inputs:  data/modeling/modeling_dataset.parquet
@@ -17,13 +18,14 @@ from datetime import datetime, timezone
 
 import pandas as pd
 
-from predictor_common import BASE_PATH, FEATURES, ROOT, join_daily, load_base, sha256
+from predictor_common import BASE_PATH, FEATURES, ROOT, join_features, load_base, sha256
 
 TABLES = {
     "collisions_daily": ["station_id", "local_date"],
     "congestion_daily": ["local_date"],
     "subway_daily": ["station_id", "local_date"],
     "events_daily": ["station_id", "local_date"],
+    "weather_forecast_hourly": ["timestamp_utc"],
 }
 OUT_PATH = ROOT / "data" / "processed" / "modeling_enriched.parquet"
 
@@ -37,7 +39,7 @@ def main():
         if sha256(path) != receipt["output_sha256"]:
             raise ValueError(f"{name} does not match its receipt; rebuild it")
         features = pd.read_parquet(path)
-        panel, unmatched = join_daily(panel, features, keys)
+        panel, unmatched = join_features(panel, features, keys)
         added = [c for c in features.columns if c not in keys]
         joins[name] = {
             "keys": keys,

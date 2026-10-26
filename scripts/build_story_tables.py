@@ -38,6 +38,12 @@ MODELS = {
     "sarima": ("SARIMA (1,0,1)(1,1,1)24", "predictor study", "Per station, parameters fixed on 2024, state updated hourly"),
     "sarimax_calendar": ("SARIMAX + weekly calendar", "predictor study", "SARIMA (1,0,1)(1,1,1)24 + weekly Fourier and off-day terms"),
     "baseline": ("Poisson regression", "predictor study", "Pooled count model: station x hour effects + recent-demand lags, refit monthly"),
+    "sarimax_weather_forecast": ("SARIMAX + calendar + weather forecast", "predictor study",
+                                 "SARIMAX + weekly calendar + Open-Meteo forecasts issued 48 h ahead (temperature, wind, rain)"),
+    "poisson_weather_forecast": ("Poisson + weather forecast", "predictor study",
+                                 "Poisson regression + Open-Meteo forecasts issued 48 h ahead (temperature, wind, rain)"),
+    "chronos": ("Chronos-Bolt (AI, zero-shot)", "predictor study",
+                "Pretrained foundation model amazon/chronos-bolt-small, no fine-tuning, 2,048-hour context, mean forecast"),
 }
 FAMILY_LABELS = {"collisions": "Nearby traffic collisions", "subway": "Nearby subway ridership",
                  "events": "Permitted street events", "congestion": "Congestion pricing"}
@@ -58,6 +64,13 @@ def team_forecasts():
 def leaderboard():
     mine = pd.read_parquet(EVAL / "sarimax" / "predictions_sarimax.parquet")
     mine["timestamp"] = pd.to_datetime(mine["timestamp_utc"], utc=True)
+    weather = pd.read_parquet(EVAL / "predictions_weather_forecast.parquet")
+    weather = weather.assign(timestamp=pd.to_datetime(weather["timestamp"], utc=True)).rename(
+        columns={"+weather_forecast": "poisson_weather_forecast"})[["station_id", "timestamp", "target", "poisson_weather_forecast"]]
+    mine = mine.merge(weather, on=["station_id", "timestamp", "target"], how="left", validate="one_to_one")
+    chronos = pd.read_parquet(ROOT / "data" / "processed" / "chronos" / "forecasts.parquet")
+    chronos = chronos.assign(timestamp=pd.to_datetime(chronos["timestamp"], utc=True))[["station_id", "timestamp", "target", "chronos"]]
+    mine = mine.merge(chronos, on=["station_id", "timestamp", "target"], how="left", validate="one_to_one")
     joined = mine.merge(team_forecasts(), on=["station_id", "timestamp", "target"], how="inner", validate="one_to_one")
     joined = joined.dropna(subset=list(MODELS))
     rows = []
@@ -97,8 +110,23 @@ def experiments():
     return pd.DataFrame(rows)
 
 
+def error_by_hour():
+    """Weekday mean absolute error by local hour on the frozen 2026 test (identical station-hours per model)."""
+    test = pd.read_parquet(ROOT / "data" / "processed" / "test_eval" / "test_forecasts.parquet")
+    models = ["seasonal_naive", "chronos", "sarimax_weather_forecast", "poisson_weather_forecast"]
+    test = test.dropna(subset=["actual", *models])
+    local = pd.to_datetime(test["timestamp"], utc=True).dt.tz_convert(TZ)
+    weekday = test[local.dt.weekday.lt(5).to_numpy()].assign(hour=local[local.dt.weekday.lt(5)].dt.hour.to_numpy())
+    rows = []
+    for (target, hour), g in weekday.groupby(["target", "hour"]):
+        for m in models:
+            rows.append({"target": target, "hour": hour, "model": m, "mae": float((g["actual"] - g[m]).abs().mean()), "rows": len(g)})
+    return pd.DataFrame(rows)
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
+    error_by_hour().to_csv(OUT / "error_by_hour.csv", index=False)
     board = leaderboard()
     board.to_csv(OUT / "validation_leaderboard.csv", index=False)
     exp = experiments()

@@ -67,12 +67,15 @@ SPECS = {
     "sarimax_subway": {"order": (1, 0, 1), "seasonal": (1, 1, 1, 24), "calendar": "weekly", "extra": ["subway_log_ridership_lag14_7d"]},
     "sarimax_events": {"order": (1, 0, 1), "seasonal": (1, 1, 1, 24), "calendar": "weekly", "extra": ["events_street_precinct"]},
     "oracle_sarimax_weather": {"order": (1, 0, 1), "seasonal": (1, 1, 1, 24), "calendar": "weekly", "extra": ["weather"]},
+    "sarimax_weather_forecast": {"order": (1, 0, 1), "seasonal": (1, 1, 1, 24), "calendar": "weekly",
+                                 "extra": ["fc_temperature", "fc_temperature_sq", "fc_wind_speed", "fc_wet"]},
 }
 LOG1P = ("coll_all_1000m_28d", "events_street_precinct")
 COLUMNS = [
     "station_id", "timestamp", "timestamp_utc", "local_date", "hour", "weekday", "holiday", "partition", *TARGETS,
     "coll_all_1000m_28d", "subway_log_ridership_lag14_7d", "events_street_precinct",
     "temperature", "wind_speed", "precipitation", "precipitation_trace", "precipitation_missing",
+    "fc_temperature", "fc_temperature_sq", "fc_wind_speed", "fc_wet",
 ]
 
 
@@ -187,7 +190,8 @@ def score(poisson):
 
     metric_rows, dm_rows = [], []
     comparisons = [(m, "baseline") for m in SPECS if not m.startswith("oracle")] + \
-                  [(m, "sarimax_calendar") for m in ("sarimax_collisions", "sarimax_subway", "sarimax_events", "oracle_sarimax_weather")]
+                  [(m, "sarimax_calendar") for m in ("sarimax_collisions", "sarimax_subway", "sarimax_events", "sarimax_weather_forecast",
+                                                       "oracle_sarimax_weather")]
     for target in TARGETS:
         part = merged[merged["target"] == target]
         for regime, rows in (("strict", part), ("weather_observed", part[~part["weather_filled"]])):

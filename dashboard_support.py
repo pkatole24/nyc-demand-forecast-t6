@@ -10,15 +10,28 @@ from bikebalance.live import current_forecasts
 from bikebalance.models import Specification, fit, predict
 
 FAMILIES = ('seasonal_naive', 'daily_sarima', 'weather_arimax')
+# Live views also offer the research SARIMAX; its historical scores come from saved
+# research results, so evaluation code keeps using FAMILIES.
+LIVE_FAMILIES = FAMILIES + ('sarimax_calendar', 'sarimax_weather_forecast')
 LABELS = {'seasonal_naive': 'Last-week baseline', 'daily_sarima': 'Daily pattern (SARIMA)',
-          'weather_arimax': 'Weather + calendar (ARIMAX)'}
+          'weather_arimax': 'Weather + calendar (ARIMAX)', 'sarimax_calendar': 'SARIMAX + weekly calendar',
+          'sarimax_weather_forecast': 'SARIMAX + calendar + weather forecast'}
 PREDICTORS = {
     'seasonal_naive': 'Repeats the same hour from last week, or the latest available week when newer trip records have not been published.',
     'daily_sarima': 'Learns repeating daily patterns from each station\'s past pickups and returns.',
-    'weather_arimax': 'Uses past trips, time of day, day of week, and temperature, wind and rain recorded two days before each forecast hour.'}
+    'weather_arimax': 'Uses past trips, time of day, day of week, and temperature, wind and rain recorded two days before each forecast hour.',
+    'sarimax_calendar': 'Learns each station\'s daily pattern from recent days at the same hour, with weekday, weekend and holiday '
+                        'adjustments. No weather inputs.',
+    'sarimax_weather_forecast': 'The same SARIMAX plus Open-Meteo weather forecasts issued two days ahead (temperature, wind '
+                                'and rain). Best live model in the 2026 test; unavailable if the forecasts cannot be retrieved.'}
 
 
 def model_signature():
+    paths = [ARTIFACTS/model/'manifest.json' for model in ('sarimax_calendar', 'sarimax_weather_forecast')]
+    return _team_signature()+''.join(':'+(digest(path) if path.exists() else 'pending') for path in paths)
+
+
+def _team_signature():
     recent = DATA.parent/'live/weather/receipt.json'
     recent_signature = digest(recent) if recent.exists() else 'no-live-weather'
     weather = ARTIFACTS/'latest_arimax_run.json'
@@ -35,6 +48,8 @@ def forecast_family(panel, station, family, now):
         return current_forecasts(panel, station, now, preview=True)
     if family == 'weather_arimax':
         return arimax_forecast(panel, station, now)
+    if family in ('sarimax_calendar', 'sarimax_weather_forecast'):
+        return sarimax_forecast(family, station, now)
     now = pd.Timestamp(now).tz_convert('UTC')
     folder = ARTIFACTS/'dashboard_models'
     path = folder/'manifest.json'
@@ -94,6 +109,28 @@ def arimax_forecast(panel, station, now):
     return frame, {'last_trip_observation': str(cutoff),
                    'last_weather_observation': str(engine.weather.index.max()),
                    'observation_age_days': (now-cutoff).total_seconds()/86400}
+
+
+def sarimax_forecast(model, station, now):
+    from bikebalance import sarimax_calendar
+    manifest = json.loads((sarimax_calendar.folder(model)/'manifest.json').read_text())
+    if manifest['base_sha256'] != digest(DATA/'modeling_dataset.parquet'):
+        raise ValueError('SARIMAX model belongs to a different base')
+    now = pd.Timestamp(now).tz_convert('UTC')
+    stop = now+pd.Timedelta(hours=24)
+    index = pd.date_range(now.floor('h'), stop.ceil('h'), freq='h', inclusive='left')
+    duration = np.array([(min(t+pd.Timedelta(hours=1), stop)-max(t, now)).total_seconds()/3600 for t in index])
+    frame = pd.DataFrame(index=index)
+    for target in ['pickups', 'dropoffs']:
+        try:
+            values, _, record = sarimax_calendar.forecast(model, station, target, index)
+        except OSError as exc:  # weather service unreachable: show the model as unavailable
+            raise ValueError('Weather forecasts could not be retrieved') from exc
+        cutoff = pd.Timestamp(record['last_observation'])
+        frame[target] = values*duration
+    frame['net_flow'] = frame.dropoffs-frame.pickups
+    frame['duration_hours'] = duration
+    return frame, {'last_trip_observation': str(cutoff), 'observation_age_days': (now-cutoff).total_seconds()/86400}
 
 
 def export_models(panel):

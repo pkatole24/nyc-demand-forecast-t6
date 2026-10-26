@@ -67,6 +67,10 @@ FAMILIES = {
         "+events_all": ["events_all_precinct"],
         "+events_street": ["events_street_precinct"],
     },
+    # Open-Meteo forecasts issued 48 h before each hour: known at the midnight origin.
+    "weather_forecast": {
+        "+weather_forecast": ["fc_temperature", "fc_temperature_sq", "fc_wind_speed", "fc_wet"],
+    },
 }
 LOG1P_PREFIXES = ("coll_", "events_")
 # Realized-weather sensitivity, kept for the collisions primary feature.
