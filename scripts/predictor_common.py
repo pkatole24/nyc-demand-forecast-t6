@@ -72,10 +72,10 @@ def write_features(name, features, keys, sources, config):
     return path
 
 
-def join_daily(panel, features, keys):
-    """Left join a daily table (station-day or citywide day) with AGENTS.md checks."""
-    if "local_date" not in keys:
-        raise ValueError("daily features must join on local_date")
+def join_features(panel, features, keys):
+    """Left join a daily table (on local_date) or a citywide hourly table (on timestamp_utc) with AGENTS.md checks."""
+    if "local_date" not in keys and keys != ["timestamp_utc"]:
+        raise ValueError("features must join on local_date, or on timestamp_utc alone for citywide hourly tables")
     if features.duplicated(keys).any():
         raise ValueError(f"feature keys {keys} are not unique")
     conflicts = (set(features.columns) - set(keys)) & set(panel.columns)

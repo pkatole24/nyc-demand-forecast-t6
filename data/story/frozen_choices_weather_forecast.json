@@ -1,0 +1,11 @@
+{
+  "frozen_on_validation": "2025",
+  "models": {
+    "poisson_weather_forecast": "Poisson GLM baseline + Open-Meteo previous_day2 forecasts: temperature, temperature^2, wind speed, wet (precipitation >= 0.1 mm); refit monthly",
+    "sarimax_weather_forecast": "SARIMAX + weekly calendar + the same four Open-Meteo previous_day2 forecast regressors; estimated 2024-02-01..2025-12-31"
+  },
+  "selection_evidence": "2025 validation: Poisson RMSE 6.12 -> 5.84 pickups, 5.99 -> 5.71 drop-offs (DM p 0.0008 / 0.0013); SARIMAX 6.27 -> 6.05, 6.21 -> 5.99 (DM p < 0.0001)",
+  "regime": "daily_updated: day-ahead from New York midnight, trips known through the previous day",
+  "panel_sha256": "698a44979b552dc2003222aaa0a74650f97e127bef6db4e180bd680e0051a8dc",
+  "frozen_at_utc": "2026-10-25T18:07:31.280270+00:00"
+}

@@ -8,7 +8,7 @@ import streamlit as st
 from dashboard_research import MODEL_COLORS, load_results, story_view, research_view
 
 from bikebalance.data import ARTIFACTS, DATA, TZ, digest, load_panel
-from dashboard_support import (FAMILIES, LABELS, PREDICTORS, forecast_family, model_signature,
+from dashboard_support import (FAMILIES, LIVE_FAMILIES, LABELS, PREDICTORS, forecast_family, model_signature,
                                station_summary, test_frame, test_metrics, aggregate_test_metrics)
 
 st.set_page_config(page_title='BikeBalance NYC', page_icon='🚲', layout='wide')
@@ -61,11 +61,20 @@ def live_forecast(station, family, now):
     return frame[duration > 0], metadata
 
 
-def choose_models(key):
+def default_live_family(now):
+    """Weather-forecast SARIMAX when its forecast inputs can be retrieved now, otherwise the calendar SARIMAX."""
+    try:
+        model_forecast(base_hash, stations.index[0], 'sarimax_weather_forecast', str(now.floor('h')), model_signature())
+        return 'sarimax_weather_forecast'
+    except (FileNotFoundError, ValueError, KeyError):
+        return 'sarimax_calendar'
+
+
+def choose_models(key, families, defaults):
     st.markdown('Compare forecasts')
     selected = []
-    for column, family in zip(st.columns(len(FAMILIES)), FAMILIES):
-        if column.checkbox(LABELS[family], value=family == 'seasonal_naive', key=f'{key}_{family}'):
+    for column, family in zip(st.columns(len(families)), families):
+        if column.checkbox(LABELS[family], value=family in defaults, key=f'{key}_{family}'):
             selected.append(family)
     return selected
 
@@ -137,7 +146,8 @@ def executive_view():
     st.subheader('Live station outlook')
     st.write('Compare current bike and dock availability, then explore the next 24 hours under a forecast scenario.')
     left, right = st.columns([3, 1])
-    family = left.radio('Available for live forecasts', FAMILIES, format_func=LABELS.get, horizontal=True, key='live_family')
+    family = left.radio('Available for live forecasts', LIVE_FAMILIES, format_func=LABELS.get, horizontal=True, key='live_family',
+                        index=LIVE_FAMILIES.index(default_live_family(pd.Timestamp.now(tz='UTC'))))
     if right.button('Refresh live status', width='stretch'):
         live_stations.clear()
     now = pd.Timestamp.now(tz='UTC')
@@ -208,8 +218,10 @@ def executive_view():
         st.write('Low-bike and low-dock alerts use 10% of currently usable spaces, with a minimum threshold of two. '
                  'Old, invalid and nonoperational reports cannot initialize a scenario. Report age above two minutes warrants attention; '
                  'the existing validation blocks reports older than five minutes or outside feed/count checks.')
-        st.write('Poisson and research calendar SARIMAX have saved historical scores but are not deployed in the live engine. '
-                 'Compare all studies in Research & validation.')
+        st.write('Both SARIMAX models run live with parameters estimated through the last published trips; the weather-forecast '
+                 'version also reads Open-Meteo forecasts issued two days ahead, covering the gap since those trips and the next 24 hours. '
+                 'Poisson + weather forecast scored best in the 2026 test but is not live: it needs the previous day\'s trips, which the '
+                 'monthly trip archive does not provide. Compare all studies in Research & validation.')
 
 
 def forecast_view():
@@ -220,14 +232,16 @@ def forecast_view():
     st.caption(f'Issued {now.tz_convert(TZ):%b %d, %I:%M %p %Z} · through {stop.tz_convert(TZ):%b %d, %I:%M %p %Z}')
     observation_context(now)
     weather_context()
-    family = st.radio('Activity outlook model', FAMILIES, format_func=LABELS.get, horizontal=True, key='outlook_family')
+    family = st.radio('Activity outlook model', LIVE_FAMILIES, format_func=LABELS.get, horizontal=True, key='outlook_family',
+                      index=LIVE_FAMILIES.index(default_live_family(now)))
     curves = {}
     try:
         curves[family], _ = live_forecast(station, family, now)
     except (FileNotFoundError, ValueError, KeyError):
         st.info('This forecast is not ready or its inputs are unavailable. Choose another model; no substitute is displayed.')
-    st.caption('Available for live forecasts: last-week baseline, daily SARIMA and weather ARIMAX. '
-               'The research leaders have historical evaluations only. Part-hour trip amounts are prorated uniformly.')
+    st.caption('Available for live forecasts: last-week baseline, daily SARIMA, weather ARIMAX, SARIMAX + weekly calendar and '
+               'SARIMAX + calendar + weather forecast. The Poisson models have historical evaluations only. Part-hour trip amounts are '
+               'prorated uniformly.')
     if curves:
         values = curves[family]
         metrics = st.columns(3)
@@ -266,7 +280,7 @@ def forecast_view():
             st.write(f'**Largest hourly drain:** {drain}. **Largest hourly build-up:** {buildup}.')
     with st.expander('Compare deployed models'):
         target = st.selectbox('Forecast target', list(TARGET_LABELS), format_func=TARGET_LABELS.get, key='compare_target')
-        selected = choose_models('future_models')
+        selected = choose_models('future_models', LIVE_FAMILIES, {default_live_family(now), 'seasonal_naive'})
         comparisons, missing = {}, []
         for model in selected:
             try:
@@ -281,12 +295,12 @@ def forecast_view():
             st.plotly_chart(figure, width='stretch', key='future_comparison')
         st.caption('Differences between model lines are not prediction intervals.')
     with st.expander('How the forecasts work'):
-        for model in FAMILIES:
+        for model in LIVE_FAMILIES:
             st.write(f'**{LABELS[model]}:** {PREDICTORS[model]}')
 
 
 def historical_view():
-    st.markdown('### Historical replay of deployed models')
+    st.markdown('### Historical replay: last-week baseline, SARIMA and ARIMAX')
     st.markdown('**Test period: January 1–September 30, 2026**')
     st.caption('Each day, we predicted the next day hour by hour, then compared with recorded trips. '
                'Models were chosen using 2025 data before checking these results. Net flow means returns minus pickups.')
@@ -327,7 +341,9 @@ def historical_view():
                     saved_results = load_results('test')
                 except (OSError, ValueError, KeyError):
                     st.caption('Additional research scores are unavailable. Verified deployed-model scores remain below.')
-            for model, label in [('sarimax_calendar', 'SARIMAX + weekly calendar'), ('poisson', 'Poisson regression')]:
+            for model, label in [('sarimax_calendar', 'SARIMAX + weekly calendar'),
+                                 ('sarimax_weather_forecast', 'SARIMAX + calendar + weather forecast'),
+                                 ('poisson', 'Poisson regression'), ('poisson_weather_forecast', 'Poisson + weather forecast')]:
                 names.append(label)
                 row = []
                 for target in targets:
@@ -366,7 +382,7 @@ def historical_view():
         st.divider()
         st.markdown('### Station detail')
         station = st.selectbox('Station', list(stations.index), key='test_station', format_func=lambda value: stations.loc[value, 'station_name'])
-        selected = choose_models('test_models')
+        selected = choose_models('test_models', FAMILIES, {'seasonal_naive'})
         regime = st.selectbox('Trip data available to the model', ['daily_updated', 'publication_lag'],
             format_func=lambda v: 'Trips available through yesterday' if v == 'daily_updated' else 'Only published monthly trip files',
             key='station_regime')

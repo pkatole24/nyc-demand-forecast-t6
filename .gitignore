@@ -110,3 +110,12 @@ data/live/weather/*
 !scripts/plot_forecasts.py
 !scripts/build_story_tables.py
 !.env.example
+
+# Live SARIMAX + weekly calendar (small parameter/state files, see bikebalance/sarimax_calendar.py)
+!artifacts/sarimax_calendar/
+!scripts/export_sarimax_live.py
+!scripts/collect_weather_forecasts.py
+!scripts/build_weather_forecast_features.py
+!artifacts/sarimax_weather_forecast/
+.venv-chronos/
+!scripts/forecast_chronos.py
