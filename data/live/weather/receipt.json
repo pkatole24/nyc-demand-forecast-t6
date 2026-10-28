@@ -1,30 +1,30 @@
 {
-  "retrieved_at_utc": "2026-10-28 13:16:36.162968+00:00",
+  "retrieved_at_utc": "2026-10-28 22:43:31.230921+00:00",
   "base_sha256": "8ea206540774c1220963f766e99d47490484a35eb93f7d30d867f696373ea78b",
   "start_utc": "2026-10-01 04:00:00+00:00",
-  "stop_utc_exclusive": "2026-10-28 13:00:00+00:00",
-  "hours": 657,
+  "stop_utc_exclusive": "2026-10-28 22:00:00+00:00",
+  "hours": 666,
   "meteostat": {
     "station": "72503",
     "model": false,
     "flags": true,
     "version": "1.7.6",
-    "path": "data/live/weather/meteostat_72503_20261028T131636Z.parquet",
+    "path": "data/live/weather/meteostat_72503_20261028T224331Z.parquet",
     "sha256": "132cc7390dade61f9e7ede1ddd618885413d1a6299492186f5790e9c4515daaa"
   },
   "iem": {
     "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=LGA&data=all&year1=2026&month1=10&day1=1&year2=2026&month2=10&day2=29&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3",
     "status": 200,
-    "path": "data/live/weather/iem_routine_LGA_20261028T131636Z.body",
-    "sha256": "4fe1f6067d62c0e0ce730cf088cbe44f2d72917d13f2ab2e8ccaf99e505e39e8"
+    "path": "data/live/weather/iem_routine_LGA_20261028T224331Z.body",
+    "sha256": "1041063c219a3bd6fecd518197ce7cd14eafa0151362ce42812d379d3bbe8b7b"
   },
   "availability_assumption": "source hour + 6h < issuance; rain report < source hour + 6h; actual first publication times unknown",
   "coverage": {
     "temperature": {
       "available": 644,
-      "missing": 13,
+      "missing": 22,
       "last_utc": "2026-10-27 23:00:00+00:00",
-      "age_hours": 14.276711935555555,
+      "age_hours": 23.7253419225,
       "missing_utc": [
         "2026-10-28 00:00:00+00:00",
         "2026-10-28 01:00:00+00:00",
@@ -38,14 +38,23 @@
         "2026-10-28 09:00:00+00:00",
         "2026-10-28 10:00:00+00:00",
         "2026-10-28 11:00:00+00:00",
-        "2026-10-28 12:00:00+00:00"
+        "2026-10-28 12:00:00+00:00",
+        "2026-10-28 13:00:00+00:00",
+        "2026-10-28 14:00:00+00:00",
+        "2026-10-28 15:00:00+00:00",
+        "2026-10-28 16:00:00+00:00",
+        "2026-10-28 17:00:00+00:00",
+        "2026-10-28 18:00:00+00:00",
+        "2026-10-28 19:00:00+00:00",
+        "2026-10-28 20:00:00+00:00",
+        "2026-10-28 21:00:00+00:00"
       ]
     },
     "wind_speed": {
       "available": 644,
-      "missing": 13,
+      "missing": 22,
       "last_utc": "2026-10-27 23:00:00+00:00",
-      "age_hours": 14.276711935555555,
+      "age_hours": 23.7253419225,
       "missing_utc": [
         "2026-10-28 00:00:00+00:00",
         "2026-10-28 01:00:00+00:00",
@@ -59,21 +68,30 @@
         "2026-10-28 09:00:00+00:00",
         "2026-10-28 10:00:00+00:00",
         "2026-10-28 11:00:00+00:00",
-        "2026-10-28 12:00:00+00:00"
+        "2026-10-28 12:00:00+00:00",
+        "2026-10-28 13:00:00+00:00",
+        "2026-10-28 14:00:00+00:00",
+        "2026-10-28 15:00:00+00:00",
+        "2026-10-28 16:00:00+00:00",
+        "2026-10-28 17:00:00+00:00",
+        "2026-10-28 18:00:00+00:00",
+        "2026-10-28 19:00:00+00:00",
+        "2026-10-28 20:00:00+00:00",
+        "2026-10-28 21:00:00+00:00"
       ]
     },
     "rain_observed": {
-      "available": 657,
+      "available": 666,
       "missing": 0,
-      "last_utc": "2026-10-28 12:00:00+00:00",
-      "age_hours": 1.2767119355555554,
+      "last_utc": "2026-10-28 21:00:00+00:00",
+      "age_hours": 1.7253419225000002,
       "missing_utc": []
     },
     "rain_numeric": {
-      "available": 634,
+      "available": 643,
       "missing": 23,
-      "last_utc": "2026-10-28 12:00:00+00:00",
-      "age_hours": 1.2767119355555554,
+      "last_utc": "2026-10-28 21:00:00+00:00",
+      "age_hours": 1.7253419225000002,
       "missing_utc": [
         "2026-10-01 22:00:00+00:00",
         "2026-10-02 22:00:00+00:00",
@@ -103,17 +121,17 @@
   },
   "boundary_contiguous": true,
   "trace_hours": 23,
-  "provider_zero_hours": 608,
+  "provider_zero_hours": 617,
   "late_rain_reports": 0,
   "live_feature_check": {
     "target_hours": 25,
-    "source_start_utc": "2026-10-26 13:00:00+00:00",
-    "source_end_utc": "2026-10-27 13:00:00+00:00",
+    "source_start_utc": "2026-10-26 22:00:00+00:00",
+    "source_end_utc": "2026-10-27 22:00:00+00:00",
     "missing_encodings": {
       "temperature_missing": 0.0,
       "wind_speed_missing": 0.0,
       "rain_missing_lag48": 0.0
     }
   },
-  "cache_sha256": "ec16b2786c9de4801ecb85627ebdc4a5f6d5f1376b6d1263e346595333700ca2"
+  "cache_sha256": "d8409841281f7d1ba535031a9d6dea6465d0f10ce4937781d7c7ca59ec4a873d"
 }
